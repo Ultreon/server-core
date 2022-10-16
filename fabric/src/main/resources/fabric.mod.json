@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "servercore",
+  "version": "${version}",
+  "name": "ServerCore",
+  "description": "Server utilities with GUI!",
+  "authors": [
+    "Qboi"
+  ],
+  "contact": {
+    "website": "https://ultreon.github.io/web/",
+    "repo": "https://github.com/Ultreon/server-core",
+    "issues": "https://github.com/Ultreon/server-core/issues"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ultreon.mods.servercore.fabric.ServerCoreFabric"
+    ]
+  },
+  "mixins": [
+    "servercore.mixins.json",
+    "servercore-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "minecraft": ">=1.19.2"
+  }
+}
