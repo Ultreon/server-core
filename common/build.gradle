@@ -23,3 +23,10 @@ publishing {
         // Add repositories to publish to here.
     }
 }
+
+javadoc.doLast {
+    copy {
+        from fileTree("build/docs/javadoc/")
+        into rootProject.file("docs/")
+    }
+}

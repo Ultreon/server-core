@@ -1,0 +1,7 @@
+com.ultreon.mods.servercore
+com.ultreon.mods.servercore.client
+com.ultreon.mods.servercore.client.state
+com.ultreon.mods.servercore.mixin.common
+com.ultreon.mods.servercore.network
+com.ultreon.mods.servercore.server
+com.ultreon.mods.servercore.server.state

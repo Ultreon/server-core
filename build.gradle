@@ -3,6 +3,8 @@ plugins {
     id "dev.architectury.loom" version "0.11.0-SNAPSHOT" apply false
 }
 
+version "${mod_version}+${System.getenv("GITHUB_BUILD_NUMBER") == null ? "local" : System.getenv("GITHUB_BUILD_NUMBER")}"
+
 architectury {
     minecraft = rootProject.minecraft_version
 }

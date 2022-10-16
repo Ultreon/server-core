@@ -1,11 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.ultreon.mods.servercore.mixin.forge",
+  "package": "com.ultreon.mods.servercore.mixin.common",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
   ],
   "client": [
+    "KeyboardInputMixin"
   ],
   "injectors": {
     "defaultRequire": 1
