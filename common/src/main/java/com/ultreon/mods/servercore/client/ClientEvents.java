@@ -15,7 +15,7 @@ public class ClientEvents {
     private static ClientEvents instance;
 
     private ClientEvents() {
-        ClientLifecycleEvent.CLIENT_STARTED.register(this::init);
+        ClientLifecycleEvent.CLIENT_SETUP.register(this::setup);
     }
 
     /**
@@ -28,7 +28,7 @@ public class ClientEvents {
         return instance;
     }
 
-    private void init(Minecraft minecraft) {
+    private void setup(Minecraft minecraft) {
         ClientStateManager.init();
     }
 

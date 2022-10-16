@@ -3,16 +3,14 @@ package com.ultreon.mods.servercore.server.state;
 import com.ultreon.mods.servercore.network.Network;
 import com.ultreon.mods.servercore.server.Permission;
 import com.ultreon.mods.servercore.server.Rank;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,6 +48,11 @@ public class ServerPlayerState extends ServerState {
 
         this.baseDir = storageDir;
         this.genericDataFile = new File(storageDir, "generic.dat");
+        if (!baseDir.exists()) {
+            if (!baseDir.mkdirs()) {
+                throw new IOException("Failed to create storage directory for player: " + uuid);
+            }
+        }
         load();
     }
 
@@ -68,7 +71,7 @@ public class ServerPlayerState extends ServerState {
         this.ranks.forEach(rank -> rank.getPermissions().forEach(perm -> permissions.add(StringTag.valueOf(perm.id()))));
         this.permissions.forEach(perm -> permissions.add(StringTag.valueOf(perm.id())));
         data.put("Permissions", permissions);
-        Network.sendStateSync(INIT_PERMISSIONS, data);
+        Network.sendStateSync(player, INIT_PERMISSIONS, data);
     }
 
     /**
@@ -82,9 +85,29 @@ public class ServerPlayerState extends ServerState {
     }
 
     private void load() throws IOException {
-        CompoundTag genericData = NbtIo.readCompressed(genericDataFile);
-        String rank = genericData.getString("rank");
-        main.getRank(rank);
+        try {
+            CompoundTag genericData = NbtIo.readCompressed(genericDataFile);
+            ranks.clear();
+            ListTag ranks = genericData.getList("Ranks", Tag.TAG_STRING);
+            for (Tag tag : ranks) {
+                if (tag instanceof StringTag s) {
+                    String rankId = s.getAsString();
+                    Rank rank = main.getRank(rankId);
+                    if (rank != null) {
+                        this.ranks.add(rank);
+                    }
+                }
+            }
+            ListTag permissions = genericData.getList("Permissions", Tag.TAG_STRING);
+            for (Tag tag : permissions) {
+                if (tag instanceof StringTag s) {
+                    String id = s.getAsString();
+                    this.permissions.add(new Permission(id));
+                }
+            }
+        } catch (FileNotFoundException ignored) {
+            // Ignore
+        }
     }
 
     /**

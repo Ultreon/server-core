@@ -1,10 +1,14 @@
 package com.ultreon.mods.servercore.server;
 
 import com.ultreon.mods.servercore.server.state.ServerStateManager;
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -19,8 +23,15 @@ public class ServerEvents {
     private ServerEvents() {
         LifecycleEvent.SERVER_BEFORE_START.register(this::start);
         LifecycleEvent.SERVER_STOPPED.register(this::stop);
-        PlayerEvent.PLAYER_JOIN.register(this::onJoin);
+        EntityEvent.ADD.register(this::onAddEntity);
         PlayerEvent.PLAYER_QUIT.register(this::onQuit);
+    }
+
+    private EventResult onAddEntity(Entity entity, Level level) {
+        if (entity instanceof ServerPlayer player) {
+            this.onJoin(player);
+        }
+        return EventResult.pass();
     }
 
     private void onJoin(ServerPlayer player) {

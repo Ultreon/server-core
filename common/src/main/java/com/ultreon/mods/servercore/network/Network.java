@@ -1,16 +1,13 @@
 package com.ultreon.mods.servercore.network;
 
 import com.ultreon.mods.servercore.ServerCore;
-import com.ultreon.mods.servercore.client.state.ClientStateManager;
-import com.ultreon.mods.servercore.server.state.ServerStateManager;
-import io.netty.buffer.Unpooled;
+import com.ultreon.mods.servercore.network.messages.PreferencesSyncMessage;
+import com.ultreon.mods.servercore.network.messages.StateSyncMessage;
+import dev.architectury.networking.NetworkChannel;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.ApiStatus;
-
-import static dev.architectury.networking.NetworkManager.*;
 
 /**
  * Network class for sending packets Server &lt;--&gt; Client.
@@ -33,33 +30,31 @@ public class Network {
     public static final ResourceLocation EXECUTE_ID = ServerCore.res("execute");
 
     /**
+     * Network channel for the mod.
+     *
+     * @since 0.1.0
+     */
+    public static final NetworkChannel CHANNEL = NetworkChannel.create(ServerCore.res("net"));
+
+    /**
      * Initialize the network system.
      *
      * @since 0.1.0
      */
     @ApiStatus.Internal
     public static void init() {
-        // We are using S2C here for an example, use C2S instead if this is from the client to the server
-        registerReceiver(Side.S2C, STATE_SYNC_ID, (buf, context) -> {
-            Player player = context.getPlayer();
-            ClientStateManager.get().getMultiplayer().receive(buf.readResourceLocation(), buf.readAnySizeNbt());
-        });
-        registerReceiver(Side.C2S, EXECUTE_ID, (buf, context) -> {
-            Player player = context.getPlayer();
-            ServerStateManager.get().player(player).receive(buf.readResourceLocation(), buf.readAnySizeNbt());
-        });
+        CHANNEL.register(StateSyncMessage.class, StateSyncMessage::encode, StateSyncMessage::new, StateSyncMessage::apply);
+        CHANNEL.register(PreferencesSyncMessage.class, PreferencesSyncMessage::encode, PreferencesSyncMessage::new, PreferencesSyncMessage::apply);
     }
 
     /**
      * Send a state synchronize packet.
      *
-     * @param type the type of sync.
-     * @param data the data to sync.
+     * @param player the player to send it to.
+     * @param type   the type of sync.
+     * @param data   the data to sync.
      */
-    public static void sendStateSync(ResourceLocation type, CompoundTag data) {
-        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-        buf.writeResourceLocation(type);
-        buf.writeNbt(data);
-        sendToServer(STATE_SYNC_ID, buf);
+    public static void sendStateSync(ServerPlayer player, ResourceLocation type, CompoundTag data) {
+        CHANNEL.sendToPlayer(player, new StateSyncMessage(type, data));
     }
 }

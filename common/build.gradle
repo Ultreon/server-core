@@ -25,6 +25,7 @@ publishing {
 }
 
 javadoc.doLast {
+    delete rootProject.fileTree("docs/")
     copy {
         from fileTree("build/docs/javadoc/")
         into rootProject.file("docs/")
