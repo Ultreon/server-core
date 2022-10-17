@@ -17,8 +17,6 @@
 <body class="index-page">
 <script type="text/javascript">var pathtoroot = "./";
 loadScripts(document, 'script');
-
-
 </script>
 <noscript>
     <div>JavaScript is disabled on your browser.</div>
@@ -237,6 +235,10 @@ loadScripts(document, 'script');
                     - package com.ultreon.mods.servercore.server
                 </dt>
                 <dd>&nbsp;</dd>
+                <dt><a href="com/ultreon/mods/servercore/server/commands/package-summary.html">com.ultreon.mods.servercore.server.commands</a>
+                    - package com.ultreon.mods.servercore.server.commands
+                </dt>
+                <dd>&nbsp;</dd>
                 <dt><a href="com/ultreon/mods/servercore/server/state/package-summary.html">com.ultreon.mods.servercore.server.state</a>
                     - package com.ultreon.mods.servercore.server.state
                 </dt>
@@ -384,6 +386,16 @@ loadScripts(document, 'script');
                 <dd>
                     <div class="block">Get the rank name.</div>
                 </dd>
+                <dt>
+                    <a class="member-name-link"
+                       href="com/ultreon/mods/servercore/server/state/ServerStateManager.html#getOnlinePlayersWith(com.ultreon.mods.servercore.server.Rank)">getOnlinePlayersWith(Rank)</a>
+                    - Method in class
+                    com.ultreon.mods.servercore.server.state.<a
+                        href="com/ultreon/mods/servercore/server/state/ServerStateManager.html"
+                        title="class in com.ultreon.mods.servercore.server.state">ServerStateManager</a></dt>
+                <dd>
+                    <div class="block">Get all players with a specific rank.</div>
+                </dd>
                 <dt><a class="member-name-link"
                        href="com/ultreon/mods/servercore/client/state/MultiplayerState.html#getPermissions()">getPermissions()</a>
                     - Method in class
@@ -510,6 +522,36 @@ loadScripts(document, 'script');
                 <dd>
                     <div class="block">Check if the player has a permission.</div>
                 </dd>
+                <dt>
+                    <a class="member-name-link"
+                       href="com/ultreon/mods/servercore/server/state/ServerStateManager.html#hasPermission(net.minecraft.commands.CommandSourceStack,com.ultreon.mods.servercore.server.Permission)">hasPermission(CommandSourceStack,
+                        Permission)</a> - Method in class
+                    com.ultreon.mods.servercore.server.state.<a
+                        href="com/ultreon/mods/servercore/server/state/ServerStateManager.html"
+                        title="class in com.ultreon.mods.servercore.server.state">ServerStateManager</a></dt>
+                <dd>
+                    <div class="block">Check if a command source stack has a certain permission.</div>
+                </dd>
+                <dt>
+                    <a class="member-name-link"
+                       href="com/ultreon/mods/servercore/server/state/ServerStateManager.html#hasPermission(net.minecraft.commands.CommandSourceStack,java.lang.String)">hasPermission(CommandSourceStack,
+                        String)</a> - Method in class
+                    com.ultreon.mods.servercore.server.state.<a
+                        href="com/ultreon/mods/servercore/server/state/ServerStateManager.html"
+                        title="class in com.ultreon.mods.servercore.server.state">ServerStateManager</a></dt>
+                <dd>
+                    <div class="block">Check if a command source stack has a certain permission.</div>
+                </dd>
+                <dt>
+                    <a class="member-name-link"
+                       href="com/ultreon/mods/servercore/server/state/ServerPlayerState.html#hasRank(com.ultreon.mods.servercore.server.Rank)">hasRank(Rank)</a>
+                    - Method in class
+                    com.ultreon.mods.servercore.server.state.<a
+                        href="com/ultreon/mods/servercore/server/state/ServerPlayerState.html"
+                        title="class in com.ultreon.mods.servercore.server.state">ServerPlayerState</a></dt>
+                <dd>
+                    <div class="block">Check if the player has a certain rank.</div>
+                </dd>
             </dl>
             <h2 class="title" id="I:I">I</h2>
             <dl class="index">
@@ -562,10 +604,10 @@ loadScripts(document, 'script');
                     <div class="block">Initialize the mod.</div>
                 </dd>
                 <dt><a class="member-name-link"
-                       href="com/ultreon/mods/servercore/network/StateSyncIds.html#INIT_PERMISSIONS">INIT_PERMISSIONS</a>
-                    - Static variable in class
-                    com.ultreon.mods.servercore.network.<a href="com/ultreon/mods/servercore/network/StateSyncIds.html"
-                                                           title="class in com.ultreon.mods.servercore.network">StateSyncIds</a>
+                       href="com/ultreon/mods/servercore/network/StateSync.html#INIT_PERMISSIONS">INIT_PERMISSIONS</a> -
+                    Static variable in class
+                    com.ultreon.mods.servercore.network.<a href="com/ultreon/mods/servercore/network/StateSync.html"
+                                                           title="class in com.ultreon.mods.servercore.network">StateSync</a>
                 </dt>
                 <dd>
                     <div class="block">Sync ID for initializing permissions on the client.</div>
@@ -724,6 +766,20 @@ loadScripts(document, 'script');
                 <dd>
                     <div class="block">Instantiate a permission object.</div>
                 </dd>
+                <dt><a class="type-name-link" href="com/ultreon/mods/servercore/server/commands/PermissionCommand.html"
+                       title="class in com.ultreon.mods.servercore.server.commands">PermissionCommand</a> - Class in <a
+                        href="com/ultreon/mods/servercore/server/commands/package-summary.html">com.ultreon.mods.servercore.server.commands</a>
+                </dt>
+                <dd>
+                    <div class="block"><code>/permission</code> command and it's subcommands + arguments.</div>
+                </dd>
+                <dt><a class="member-name-link"
+                       href="com/ultreon/mods/servercore/server/commands/PermissionCommand.html#%3Cinit%3E()">PermissionCommand()</a>
+                    - Constructor for class
+                    com.ultreon.mods.servercore.server.commands.<a
+                            href="com/ultreon/mods/servercore/server/commands/PermissionCommand.html"
+                            title="class in com.ultreon.mods.servercore.server.commands">PermissionCommand</a></dt>
+                <dd>&nbsp;</dd>
                 <dt><a class="member-name-link"
                        href="com/ultreon/mods/servercore/server/state/ServerPlayerState.html#player()">player()</a> -
                     Method in class com.ultreon.mods.servercore.server.state.<a
@@ -829,6 +885,16 @@ loadScripts(document, 'script');
                 </dd>
                 <dt>
                     <a class="member-name-link"
+                       href="com/ultreon/mods/servercore/server/commands/PermissionCommand.html#register(com.mojang.brigadier.CommandDispatcher)">register(CommandDispatcher&lt;CommandSourceStack&gt;)</a>
+                    - Static
+                    method in class com.ultreon.mods.servercore.server.commands.<a
+                        href="com/ultreon/mods/servercore/server/commands/PermissionCommand.html"
+                        title="class in com.ultreon.mods.servercore.server.commands">PermissionCommand</a></dt>
+                <dd>
+                    <div class="block">Register the command using the command dispatcher.</div>
+                </dd>
+                <dt>
+                    <a class="member-name-link"
                        href="com/ultreon/mods/servercore/server/Rank.html#removePermission(com.ultreon.mods.servercore.server.Permission)">removePermission(Permission)</a>
                     - Method in class
                     com.ultreon.mods.servercore.server.<a href="com/ultreon/mods/servercore/server/Rank.html"
@@ -884,6 +950,26 @@ loadScripts(document, 'script');
                             title="class in com.ultreon.mods.servercore.server">Rank</a></dt>
                 <dd>
                     <div class="block">Save the rank data as NBT.</div>
+                </dd>
+                <dt>
+                    <a class="member-name-link"
+                       href="com/ultreon/mods/servercore/server/state/ServerPlayerState.html#sendAddPermission(com.ultreon.mods.servercore.server.Permission)">sendAddPermission(Permission)</a>
+                    - Method in class
+                    com.ultreon.mods.servercore.server.state.<a
+                        href="com/ultreon/mods/servercore/server/state/ServerPlayerState.html"
+                        title="class in com.ultreon.mods.servercore.server.state">ServerPlayerState</a></dt>
+                <dd>
+                    <div class="block">Send permission adding to client.</div>
+                </dd>
+                <dt>
+                    <a class="member-name-link"
+                       href="com/ultreon/mods/servercore/server/state/ServerPlayerState.html#sendRemovePermission(com.ultreon.mods.servercore.server.Permission)">sendRemovePermission(Permission)</a>
+                    - Method in class
+                    com.ultreon.mods.servercore.server.state.<a
+                        href="com/ultreon/mods/servercore/server/state/ServerPlayerState.html"
+                        title="class in com.ultreon.mods.servercore.server.state">ServerPlayerState</a></dt>
+                <dd>
+                    <div class="block">Send permission removing to client.</div>
                 </dd>
                 <dt>
                     <a class="member-name-link"
@@ -974,10 +1060,10 @@ loadScripts(document, 'script');
                     <div class="block">Server state manager.</div>
                 </dd>
                 <dt><a class="member-name-link"
-                       href="com/ultreon/mods/servercore/network/StateSyncIds.html#SET_PERMISSION">SET_PERMISSION</a> -
+                       href="com/ultreon/mods/servercore/network/StateSync.html#SET_PERMISSION">SET_PERMISSION</a> -
                     Static variable in class
-                    com.ultreon.mods.servercore.network.<a href="com/ultreon/mods/servercore/network/StateSyncIds.html"
-                                                           title="class in com.ultreon.mods.servercore.network">StateSyncIds</a>
+                    com.ultreon.mods.servercore.network.<a href="com/ultreon/mods/servercore/network/StateSync.html"
+                                                           title="class in com.ultreon.mods.servercore.network">StateSync</a>
                 </dt>
                 <dd>
                     <div class="block">Sync ID for setting a permission on the client.</div>
@@ -990,6 +1076,16 @@ loadScripts(document, 'script');
                 </dt>
                 <dd>
                     <div class="block">Get the rank name.</div>
+                </dd>
+                <dt>
+                    <a class="member-name-link"
+                       href="com/ultreon/mods/servercore/network/StateSync.html#setPermission(com.ultreon.mods.servercore.server.Permission,boolean)">setPermission(Permission,
+                        boolean)</a> - Static method in class
+                    com.ultreon.mods.servercore.network.<a href="com/ultreon/mods/servercore/network/StateSync.html"
+                                                           title="class in com.ultreon.mods.servercore.network">StateSync</a>
+                </dt>
+                <dd>
+                    <div class="block">Create a NBT tag for the set permission state sync.</div>
                 </dd>
                 <dt>
                     <a class="member-name-link"
@@ -1008,19 +1104,17 @@ loadScripts(document, 'script');
                 <dd>
                     <div class="block">State sync packet ID.</div>
                 </dd>
-                <dt><a class="type-name-link" href="com/ultreon/mods/servercore/network/StateSyncIds.html"
-                       title="class in com.ultreon.mods.servercore.network">StateSyncIds</a> - Class in <a
+                <dt><a class="type-name-link" href="com/ultreon/mods/servercore/network/StateSync.html"
+                       title="class in com.ultreon.mods.servercore.network">StateSync</a> - Class in <a
                         href="com/ultreon/mods/servercore/network/package-summary.html">com.ultreon.mods.servercore.network</a>
                 </dt>
                 <dd>
-                    <div class="block">State synchronization IDs.</div>
+                    <div class="block">State synchronization utilities.</div>
                 </dd>
-                <dt><a class="member-name-link"
-                       href="com/ultreon/mods/servercore/network/StateSyncIds.html#%3Cinit%3E()">StateSyncIds()</a> -
-                    Constructor for class
-                    com.ultreon.mods.servercore.network.<a href="com/ultreon/mods/servercore/network/StateSyncIds.html"
-                                                           title="class in com.ultreon.mods.servercore.network">StateSyncIds</a>
-                </dt>
+                <dt><a class="member-name-link" href="com/ultreon/mods/servercore/network/StateSync.html#%3Cinit%3E()">StateSync()</a>
+                    - Constructor for class com.ultreon.mods.servercore.network.<a
+                            href="com/ultreon/mods/servercore/network/StateSync.html"
+                            title="class in com.ultreon.mods.servercore.network">StateSync</a></dt>
                 <dd>&nbsp;</dd>
                 <dt><a class="type-name-link" href="com/ultreon/mods/servercore/network/messages/StateSyncMessage.html"
                        title="class in com.ultreon.mods.servercore.network.messages">StateSyncMessage</a> - Class in <a

@@ -1,6 +1,7 @@
 package com.ultreon.mods.servercore.server.state;
 
 import com.ultreon.mods.servercore.network.Network;
+import com.ultreon.mods.servercore.network.StateSync;
 import com.ultreon.mods.servercore.server.Permission;
 import com.ultreon.mods.servercore.server.Rank;
 import net.minecraft.nbt.*;
@@ -16,11 +17,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.ultreon.mods.servercore.network.StateSyncIds.INIT_PERMISSIONS;
+import static com.ultreon.mods.servercore.network.StateSync.INIT_PERMISSIONS;
 
 /**
  * Server player state.
- *
  * @since 0.1.0
  */
 public class ServerPlayerState extends ServerState {
@@ -34,7 +34,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Create an instance of the player state class.
-     *
      * @param uuid       the player's UUID.
      * @param main       the state manager.
      * @param storageDir the directory where the data is stored.
@@ -58,7 +57,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Handle joining of the player.
-     *
      * @param player the player joined.
      * @since 0.1.0
      */
@@ -76,7 +74,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Handle leaving of the player.
-     *
      * @since 0.1.0
      */
     @ApiStatus.Internal
@@ -112,7 +109,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Receive a data sync from the client.
-     *
      * @param type the type of data.
      * @param data the data to sync.
      */
@@ -121,7 +117,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * The bound player if online.
-     *
      * @return the player. (null if offline).
      * @since 0.1.0
      */
@@ -132,7 +127,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Check if the player is online.
-     *
      * @return whether the player is online.
      * @since 0.1.0
      */
@@ -142,7 +136,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Check if the player is offline.
-     *
      * @return whether the player is offline.
      * @since 0.1.0
      */
@@ -152,47 +145,52 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Add a permission to the player.
-     *
      * @param permission the permission to add.
      * @since 0.1.0
      */
     public void addPermission(String permission) {
-        permissions.add(new Permission(permission));
+        this.addPermission(new Permission(permission));
     }
 
     /**
      * Add a permission to the player.
-     *
      * @param permission the permission to add.
      * @since 0.1.0
      */
     public void addPermission(Permission permission) {
+        boolean hadBefore = hasPermission(permission);
         permissions.add(permission);
+
+        if (!hadBefore) {
+            sendAddPermission(permission);
+        }
     }
 
     /**
      * Remove a permission to the player.
-     *
      * @param permission the permission to remove.
      * @since 0.1.0
      */
     public void removePermission(String permission) {
-        permissions.remove(new Permission(permission));
+        this.removePermission(new Permission(permission));
     }
 
     /**
      * Remove a permission to the player.
-     *
      * @param permission the permission to remove.
      * @since 0.1.0
      */
     public void removePermission(Permission permission) {
+        boolean hadBefore = hasPermission(permission);
         permissions.remove(permission);
+
+        if (!hasPermission(permission) && hadBefore) {
+            sendRemovePermission(permission);
+        }
     }
 
     /**
      * Check if the player has a permission.
-     *
      * @param permission the permission to check for.
      * @return whether the player has that permission.
      * @since 0.1.0
@@ -203,19 +201,17 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Check if the player has a permission.
-     *
      * @param permission the permission to check for.
      * @return whether the player has that permission.
      * @since 0.1.0
      */
     public boolean hasPermission(Permission permission) {
         return ranks.stream().anyMatch(rank -> rank.hasPermission(permission))
-                || permissions.stream().anyMatch(perm -> perm.isParent(permission) || perm.equals(permission));
+                || permissions.stream().anyMatch(perm -> perm.isChild(permission) || perm.equals(permission));
     }
 
     /**
      * Get all the permissions the player has.
-     *
      * @return all the permissions.
      * @since 0.1.0
      */
@@ -225,7 +221,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Get the bound player's UUID.
-     *
      * @return the UUID.
      * @since 0.1.0
      */
@@ -235,7 +230,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Get the base directory of where the data is stored/
-     *
      * @return the base storage directory.
      * @since 0.1.0
      */
@@ -245,7 +239,6 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Add a rank to the player.
-     *
      * @param rank the rank to add.
      * @since 0.1.0
      */
@@ -263,5 +256,46 @@ public class ServerPlayerState extends ServerState {
         Rank rank = main.getRank(id);
         if (rank == null) return;
         this.ranks.add(rank);
+    }
+
+    /**
+     * Check if the player has a certain rank.
+     *
+     * @param rank the rank to check for.
+     * @return whether the player has that rank.
+     * @since 0.1.0
+     */
+    public boolean hasRank(Rank rank) {
+        return this.ranks.contains(rank);
+    }
+
+    /**
+     * Send permission adding to client.
+     *
+     * @param permission permission to send the adding for.
+     * @since 0.1.0
+     */
+    @ApiStatus.Internal
+    public void sendAddPermission(Permission permission) {
+        ServerPlayer player = this.player;
+        if (player != null) {
+            CompoundTag data = StateSync.setPermission(permission, true);
+            Network.sendStateSync(player, StateSync.SET_PERMISSION, data);
+        }
+    }
+
+    /**
+     * Send permission removing to client.
+     *
+     * @param permission permission to send the removal for.
+     * @since 0.1.0
+     */
+    @ApiStatus.Internal
+    public void sendRemovePermission(Permission permission) {
+        ServerPlayer player = this.player;
+        if (player != null) {
+            CompoundTag data = StateSync.setPermission(permission, false);
+            Network.sendStateSync(player, StateSync.SET_PERMISSION, data);
+        }
     }
 }

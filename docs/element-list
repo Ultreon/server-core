@@ -5,4 +5,5 @@ com.ultreon.mods.servercore.mixin.common
 com.ultreon.mods.servercore.network
 com.ultreon.mods.servercore.network.messages
 com.ultreon.mods.servercore.server
+com.ultreon.mods.servercore.server.commands
 com.ultreon.mods.servercore.server.state

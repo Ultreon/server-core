@@ -1,17 +1,18 @@
 package com.ultreon.mods.servercore.server.state;
 
+import com.ultreon.mods.servercore.server.Permission;
 import com.ultreon.mods.servercore.server.Rank;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.LevelResource;
+import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Server state manager.
@@ -133,5 +134,62 @@ public class ServerStateManager {
      */
     public void createRank(Rank rank) {
         this.ranks.put(rank.getId(), rank);
+    }
+
+    /**
+     * Check if a command source stack has a certain permission.
+     *
+     * @param commandSourceStack the command source stack.
+     * @param permission         the permission.
+     * @return whether it has permission.
+     */
+    public boolean hasPermission(CommandSourceStack commandSourceStack, String permission) {
+        return hasPermission(commandSourceStack, new Permission(permission));
+    }
+
+    /**
+     * Check if a command source stack has a certain permission.
+     *
+     * @param commandSourceStack the command source stack.
+     * @param permission         the permission.
+     * @return whether it has permission.
+     */
+    public boolean hasPermission(CommandSourceStack commandSourceStack, Permission permission) {
+        if (isServer(commandSourceStack) || isOp(commandSourceStack)) {
+            return true;
+        } else if (commandSourceStack.getEntity() instanceof Player player) {
+            return player(player).hasPermission(permission);
+        }
+        return false;
+    }
+
+    private boolean isOp(CommandSourceStack commandSourceStack) {
+        return commandSourceStack.hasPermission(commandSourceStack.getServer().getOperatorUserPermissionLevel());
+    }
+
+    private boolean isServer(CommandSourceStack commandSourceStack) {
+        return commandSourceStack.getEntity() == null && Objects.equals(commandSourceStack.getTextName(), "Server")
+                && commandSourceStack.getRotation().equals(Vec2.ZERO) && commandSourceStack.hasPermission(4);
+    }
+
+    /**
+     * Get all players with a specific rank.
+     *
+     * @param rank the rank to get the players for.
+     * @return the online players with that rank.
+     * @since 0.1.0
+     */
+    public List<Player> getOnlinePlayersWith(Rank rank) {
+        if (getRank(rank.getId()) == null) return new ArrayList<>();
+
+        List<Player> players = new ArrayList<>();
+        for (ServerPlayerState state : playerStates.values()) {
+            if (state.isOffline()) continue;
+            if (state.hasRank(rank)) {
+                players.add(state.player());
+            }
+        }
+
+        return players;
     }
 }

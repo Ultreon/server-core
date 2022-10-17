@@ -1,5 +1,7 @@
 package com.ultreon.mods.servercore.server;
 
+import com.ultreon.mods.servercore.server.state.ServerPlayerState;
+import com.ultreon.mods.servercore.server.state.ServerStateManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -93,7 +95,7 @@ public class Rank {
      * @since 0.1.0
      */
     public void addPermission(String permission) {
-        permissions.add(new Permission(permission));
+        this.addPermission(new Permission(permission));
     }
 
     /**
@@ -104,6 +106,10 @@ public class Rank {
      */
     public void addPermission(Permission permission) {
         permissions.add(permission);
+        ServerStateManager manager = ServerStateManager.get();
+        if (manager != null) {
+            manager.getOnlinePlayersWith(this).forEach(player -> manager.player(player).sendAddPermission(permission));
+        }
     }
 
     /**
@@ -113,7 +119,7 @@ public class Rank {
      * @since 0.1.0
      */
     public void removePermission(String permission) {
-        permissions.remove(new Permission(permission));
+        this.removePermission(new Permission(permission));
     }
 
     /**
@@ -124,6 +130,15 @@ public class Rank {
      */
     public void removePermission(Permission permission) {
         permissions.remove(permission);
+        ServerStateManager manager = ServerStateManager.get();
+        if (manager != null) {
+            manager.getOnlinePlayersWith(this).forEach(player -> {
+                ServerPlayerState playerState = manager.player(player);
+                if (!playerState.hasPermission(permission)) {
+                    playerState.sendRemovePermission(permission);
+                }
+            });
+        }
     }
 
     /**
@@ -145,7 +160,7 @@ public class Rank {
      * @since 0.1.0
      */
     public boolean hasPermission(Permission permission) {
-        return permissions.stream().anyMatch(perm -> perm.isParent(permission) || perm.equals(permission));
+        return permissions.stream().anyMatch(perm -> perm.isChild(permission) || perm.equals(permission));
     }
 
     /**

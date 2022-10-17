@@ -22,8 +22,6 @@ var tableTab = "table-tab";
 var activeTableTab = "active-table-tab";
 var pathtoroot = "../../../../../../";
 loadScripts(document, 'script');
-
-
 </script>
 <noscript>
     <div>JavaScript is disabled on your browser.</div>
@@ -181,10 +179,27 @@ loadScripts(document, 'script');
                                             <div class="block">Get the instance of the server state manager.</div>
                                         </div>
                                         <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a
+                                                    class="external-link"
+                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html"
+                                                    title="class or interface in java.util">List</a>&lt;net.minecraft.world.entity.player.Player&gt;</code>
+                                        </div>
+                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a
+                                                    class="member-name-link"
+                                                    href="#getOnlinePlayersWith(com.ultreon.mods.servercore.server.Rank)">getOnlinePlayersWith</a>
+                                                <wbr>
+                                                (<a href="../Rank.html"
+                                                    title="class in com.ultreon.mods.servercore.server">Rank</a>&nbsp;rank)</code>
+                                        </div>
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Get all players with a specific rank.</div>
+                                        </div>
+                                        <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a href="../Rank.html"
                                                      title="class in com.ultreon.mods.servercore.server">Rank</a></code>
                                         </div>
-                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                        <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a class="member-name-link"
                                                      href="#getRank(java.lang.String)">getRank</a>
                                                 <wbr>
@@ -192,57 +207,90 @@ loadScripts(document, 'script');
                                                     href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html"
                                                     title="class or interface in java.lang">String</a>&nbsp;id)</code>
                                         </div>
-                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                        <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <div class="block">Get the existing rank.</div>
                                         </div>
-                                        <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-                                            <code><a href="ServerPlayerState.html"
-                                                     title="class in com.ultreon.mods.servercore.server.state">ServerPlayerState</a></code>
-                                        </div>
-                                        <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-                                            <code><a class="member-name-link" href="#player(java.util.UUID)">player</a>
+                                        <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code>boolean</code></div>
+                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a
+                                                    class="member-name-link"
+                                                    href="#hasPermission(net.minecraft.commands.CommandSourceStack,com.ultreon.mods.servercore.server.Permission)">hasPermission</a>
                                                 <wbr>
-                                                (<a class="external-link"
-                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/UUID.html"
-                                                    title="class or interface in java.util">UUID</a>&nbsp;uuid)</code>
+                                                (net.minecraft.commands.CommandSourceStack&nbsp;commandSourceStack,
+                                                <a href="../Permission.html"
+                                                   title="class in com.ultreon.mods.servercore.server">Permission</a>&nbsp;permission)</code>
+                                        </div>
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Check if a command source stack has a certain
+                                                permission.
+                                            </div>
+                                        </div>
+                                        <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code>boolean</code></div>
+                                        <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a
+                                                    class="member-name-link"
+                                                    href="#hasPermission(net.minecraft.commands.CommandSourceStack,java.lang.String)">hasPermission</a>
+                                                <wbr>
+                                                (net.minecraft.commands.CommandSourceStack&nbsp;commandSourceStack,
+                                                <a class="external-link"
+                                                   href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html"
+                                                   title="class or interface in java.lang">String</a>&nbsp;permission)</code>
                                         </div>
                                         <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-                                            <div class="block">Get the state of a player using a UUID.</div>
+                                            <div class="block">Check if a command source stack has a certain
+                                                permission.
+                                            </div>
                                         </div>
                                         <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a href="ServerPlayerState.html"
                                                      title="class in com.ultreon.mods.servercore.server.state">ServerPlayerState</a></code>
                                         </div>
                                         <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a class="member-name-link" href="#player(java.util.UUID)">player</a>
+                                                <wbr>
+                                                (<a class="external-link"
+                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/UUID.html"
+                                                    title="class or interface in java.util">UUID</a>&nbsp;uuid)</code>
+                                        </div>
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Get the state of a player using a UUID.</div>
+                                        </div>
+                                        <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a href="ServerPlayerState.html"
+                                                     title="class in com.ultreon.mods.servercore.server.state">ServerPlayerState</a></code>
+                                        </div>
+                                        <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a class="member-name-link"
                                                      href="#player(net.minecraft.world.entity.player.Player)">player</a>
                                                 <wbr>
                                                 (net.minecraft.world.entity.player.Player&nbsp;player)</code></div>
-                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                        <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <div class="block">Get the state of the player.</div>
                                         </div>
-                                        <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                        <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code>net.minecraft.server.MinecraftServer</code></div>
-                                        <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a class="member-name-link" href="#server()">server</a>()</code></div>
-                                        <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <div class="block">Get the server where the manager is bound to.</div>
-                                        </div>
-                                        <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-                                            <code>static void</code></div>
-                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-                                            <code><a class="member-name-link"
-                                                     href="#start(net.minecraft.server.MinecraftServer)">start</a>
-                                                <wbr>
-                                                (net.minecraft.server.MinecraftServer&nbsp;server)</code></div>
-                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-                                            <div class="block">Start the state manager.</div>
                                         </div>
                                         <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
                                             <code>static void</code></div>
                                         <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-                                            <code><a class="member-name-link" href="#stop()">stop</a>()</code></div>
+                                            <code><a class="member-name-link"
+                                                     href="#start(net.minecraft.server.MinecraftServer)">start</a>
+                                                <wbr>
+                                                (net.minecraft.server.MinecraftServer&nbsp;server)</code></div>
                                         <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+                                            <div class="block">Start the state manager.</div>
+                                        </div>
+                                        <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+                                            <code>static void</code></div>
+                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+                                            <code><a class="member-name-link" href="#stop()">stop</a>()</code></div>
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
                                             <div class="block">Stop the state manager.</div>
                                         </div>
                                     </div>
@@ -470,6 +518,74 @@ loadScripts(document, 'script');
                                         <dl class="notes">
                                             <dt>Parameters:</dt>
                                             <dd><code>rank</code> - the rank.</dd>
+                                            <dt>Since:</dt>
+                                            <dd>0.1.0</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
+                                    <section class="detail"
+                                             id="hasPermission(net.minecraft.commands.CommandSourceStack,java.lang.String)">
+                                        <h3>hasPermission</h3>
+                                        <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
+                                                class="return-type">boolean</span>&nbsp;<span class="element-name">hasPermission</span>
+                                            <wbr>
+                                            <span class="parameters">(net.minecraft.commands.CommandSourceStack&nbsp;commandSourceStack,
+ <a class="external-link"
+    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html"
+    title="class or interface in java.lang">String</a>&nbsp;permission)</span></div>
+                                        <div class="block">Check if a command source stack has a certain permission.
+                                        </div>
+                                        <dl class="notes">
+                                            <dt>Parameters:</dt>
+                                            <dd><code>commandSourceStack</code> - the command source stack.</dd>
+                                            <dd><code>permission</code> - the permission.</dd>
+                                            <dt>Returns:</dt>
+                                            <dd>whether it has permission.</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
+                                    <section class="detail"
+                                             id="hasPermission(net.minecraft.commands.CommandSourceStack,com.ultreon.mods.servercore.server.Permission)">
+                                        <h3>hasPermission</h3>
+                                        <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
+                                                class="return-type">boolean</span>&nbsp;<span class="element-name">hasPermission</span>
+                                            <wbr>
+                                            <span class="parameters">(net.minecraft.commands.CommandSourceStack&nbsp;commandSourceStack,
+ <a href="../Permission.html" title="class in com.ultreon.mods.servercore.server">Permission</a>&nbsp;permission)</span>
+                                        </div>
+                                        <div class="block">Check if a command source stack has a certain permission.
+                                        </div>
+                                        <dl class="notes">
+                                            <dt>Parameters:</dt>
+                                            <dd><code>commandSourceStack</code> - the command source stack.</dd>
+                                            <dd><code>permission</code> - the permission.</dd>
+                                            <dt>Returns:</dt>
+                                            <dd>whether it has permission.</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
+                                    <section class="detail"
+                                             id="getOnlinePlayersWith(com.ultreon.mods.servercore.server.Rank)">
+                                        <h3>getOnlinePlayersWith</h3>
+                                        <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
+                                                class="return-type"><a
+                                                class="external-link"
+                                                href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html"
+                                                title="class or interface in java.util">List</a>&lt;net.minecraft.world.entity.player.Player&gt;</span>&nbsp;<span
+                                                class="element-name">getOnlinePlayersWith</span>
+                                            <wbr>
+                                            <span class="parameters">(<a href="../Rank.html"
+                                                                         title="class in com.ultreon.mods.servercore.server">Rank</a>&nbsp;rank)</span>
+                                        </div>
+                                        <div class="block">Get all players with a specific rank.</div>
+                                        <dl class="notes">
+                                            <dt>Parameters:</dt>
+                                            <dd><code>rank</code> - the rank to get the players for.</dd>
+                                            <dt>Returns:</dt>
+                                            <dd>the online players with that rank.</dd>
                                             <dt>Since:</dt>
                                             <dd>0.1.0</dd>
                                         </dl>

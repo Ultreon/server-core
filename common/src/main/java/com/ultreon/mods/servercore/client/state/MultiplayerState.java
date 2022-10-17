@@ -12,8 +12,8 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.ultreon.mods.servercore.network.StateSyncIds.INIT_PERMISSIONS;
-import static com.ultreon.mods.servercore.network.StateSyncIds.SET_PERMISSION;
+import static com.ultreon.mods.servercore.network.StateSync.INIT_PERMISSIONS;
+import static com.ultreon.mods.servercore.network.StateSync.SET_PERMISSION;
 
 /**
  * Multiplayer client state.
@@ -108,6 +108,7 @@ public class MultiplayerState extends ClientState {
      * @since 0.1.0
      */
     public boolean hasPermission(String permission) {
+        System.out.println(hasPermission(new Permission("minecraft.interaction")));
         return hasPermission(new Permission(permission));
     }
 
@@ -119,7 +120,7 @@ public class MultiplayerState extends ClientState {
      * @since 0.1.0
      */
     public boolean hasPermission(Permission permission) {
-        return permissions.stream().anyMatch(perm -> perm.isParent(permission) || perm.equals(permission));
+        return permissions.stream().anyMatch(perm -> perm.isChild(permission) || perm.equals(permission));
     }
 
     /**
