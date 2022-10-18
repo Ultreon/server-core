@@ -2,6 +2,7 @@ package com.ultreon.mods.servercore.server;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.ultreon.mods.servercore.server.commands.ServerCoreCommand;
+import com.ultreon.mods.servercore.server.commands.TopCommand;
 import com.ultreon.mods.servercore.server.state.ServerStateManager;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
@@ -46,6 +47,7 @@ public class ServerEvents {
     }
 
     private void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext, Commands.CommandSelection commandSelection) {
+        TopCommand.register(dispatcher);
         ServerCoreCommand.register(dispatcher);
     }
 

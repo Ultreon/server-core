@@ -1,5 +1,6 @@
 {
   "minecraft.interactions.walk": true,
   "minecraft.interactions.jump": true,
-  "minecraft.interactions.sprint": true
+  "minecraft.interactions.sprint": true,
+  "servercore.commands.top": false
 }

@@ -3,6 +3,7 @@ package com.ultreon.mods.servercore.server.commands;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ultreon.mods.servercore.server.Permission;
 import com.ultreon.mods.servercore.server.state.ServerPlayerState;
 import com.ultreon.mods.servercore.server.state.ServerStateManager;
@@ -20,13 +21,20 @@ import java.util.Collection;
  * @since 0.1.0
  */
 public class ServerCoreCommand {
+    private static LiteralCommandNode<CommandSourceStack> command;
+
     /**
      * Register the command using the command dispatcher.
      *
      * @param dispatcher the command dispatcher
      */
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("servercore")
+        command = dispatcher.register(Commands.literal("servercore")
+                .then(Commands.literal("cmd")
+                        .then(Commands.literal("top")
+                                .redirect(TopCommand.getCommand())
+                        )
+                )
                 .then(Commands.literal("user")
                         .then(Commands.argument("user", GameProfileArgument.gameProfile())
                                 .then(Commands.literal("perms")
@@ -97,5 +105,9 @@ public class ServerCoreCommand {
                         )
                 )
         );
+    }
+
+    public static LiteralCommandNode<CommandSourceStack> getCommand() {
+        return command;
     }
 }
