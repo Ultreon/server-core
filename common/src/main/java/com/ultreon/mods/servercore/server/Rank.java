@@ -19,7 +19,13 @@ import java.util.Set;
 public class Rank {
     private final String id;
     private String name;
-    private final Set<Permission> permissions = new HashSet<>();
+
+    /**
+     * All the permissions the rank has.
+     *
+     * @since 0.1.0
+     */
+    protected final Set<Permission> permissions = new HashSet<>();
 
     /**
      * Create a rank from NBT data.

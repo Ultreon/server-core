@@ -8,6 +8,8 @@ import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Main mod class.
@@ -21,6 +23,13 @@ public class ServerCore {
      * @since 0.1.0
      */
     public static final String MOD_ID = "servercore";
+
+    /**
+     * Mod's Logger
+     *
+     * @since 0.1.0
+     */
+    public static final Logger LOGGER = LoggerFactory.getLogger("ServerCore");
 
     /**
      * Initialize the mod.

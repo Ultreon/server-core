@@ -145,19 +145,19 @@ loadScripts(document, 'script');
                                             <code>void</code></div>
                                         <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a class="member-name-link"
-                                                     href="#createRank(com.ultreon.mods.servercore.server.Rank)">createRank</a>
+                                                     href="#addRank(com.ultreon.mods.servercore.server.Rank)">addRank</a>
                                                 <wbr>
                                                 (<a href="../Rank.html"
                                                     title="class in com.ultreon.mods.servercore.server">Rank</a>&nbsp;rank)</code>
                                         </div>
                                         <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-                                            <div class="block">Create from an already instantiated rank.</div>
+                                            <div class="block">Add a rank from an already instantiated one.</div>
                                         </div>
                                         <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code>void</code></div>
                                         <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a class="member-name-link"
-                                                     href="#createRank(java.lang.String,java.lang.String)">createRank</a>
+                                                     href="#addRank(java.lang.String,java.lang.String)">addRank</a>
                                                 <wbr>
                                                 (<a class="external-link"
                                                     href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html"
@@ -177,6 +177,30 @@ loadScripts(document, 'script');
                                             <code><a class="member-name-link" href="#get()">get</a>()</code></div>
                                         <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
                                             <div class="block">Get the instance of the server state manager.</div>
+                                        </div>
+                                        <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a href="../Rank.html"
+                                                     title="class in com.ultreon.mods.servercore.server">Rank</a></code>
+                                        </div>
+                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a class="member-name-link"
+                                                     href="#getDefaultRank()">getDefaultRank</a>()</code></div>
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Get the default rank</div>
+                                        </div>
+                                        <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a
+                                                    class="external-link"
+                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html"
+                                                    title="class or interface in java.util">Set</a>&lt;<a
+                                                    href="../Permission.html"
+                                                    title="class in com.ultreon.mods.servercore.server">Permission</a>&gt;</code>
+                                        </div>
+                                        <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a class="member-name-link" href="#getGlobalPermissions()">getGlobalPermissions</a>()</code>
+                                        </div>
+                                        <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Get all globally enabled permissions.</div>
                                         </div>
                                         <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a
@@ -244,6 +268,26 @@ loadScripts(document, 'script');
                                             </div>
                                         </div>
                                         <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code>void</code></div>
+                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a class="member-name-link" href="#loadLocal()">loadLocal</a>()</code>
+                                        </div>
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Save local data to NBT.</div>
+                                        </div>
+                                        <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code>@Nullable <a href="ServerPlayerState.html"
+                                                               title="class in com.ultreon.mods.servercore.server.state">ServerPlayerState</a></code>
+                                        </div>
+                                        <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a class="member-name-link"
+                                                     href="#player(com.mojang.authlib.GameProfile)">player</a>
+                                                <wbr>
+                                                (com.mojang.authlib.GameProfile&nbsp;profile)</code></div>
+                                        <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Get the player state from game profile.</div>
+                                        </div>
+                                        <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a href="ServerPlayerState.html"
                                                      title="class in com.ultreon.mods.servercore.server.state">ServerPlayerState</a></code>
                                         </div>
@@ -268,6 +312,26 @@ loadScripts(document, 'script');
                                                 (net.minecraft.world.entity.player.Player&nbsp;player)</code></div>
                                         <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <div class="block">Get the state of the player.</div>
+                                        </div>
+                                        <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code>void</code></div>
+                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a class="member-name-link" href="#removeRank(java.lang.String)">removeRank</a>
+                                                <wbr>
+                                                (<a class="external-link"
+                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html"
+                                                    title="class or interface in java.lang">String</a>&nbsp;id)</code>
+                                        </div>
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Remove a rank.</div>
+                                        </div>
+                                        <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code>void</code></div>
+                                        <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a class="member-name-link" href="#saveLocal()">saveLocal</a>()</code>
+                                        </div>
+                                        <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Load local data from NBT.</div>
                                         </div>
                                         <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code>net.minecraft.server.MinecraftServer</code></div>
@@ -347,6 +411,62 @@ loadScripts(document, 'script');
                         <section class="method-details" id="method-detail">
                             <h2>Method Details</h2>
                             <ul class="member-list">
+                                <li>
+                                    <section class="detail" id="loadLocal()">
+                                        <h3>loadLocal</h3>
+                                        <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
+                                                class="return-type">void</span>&nbsp;<span class="element-name">loadLocal</span>()
+                                            throws <span class="exceptions"><a
+                                                    class="external-link"
+                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html"
+                                                    title="class or interface in java.io">IOException</a></span>
+                                        </div>
+                                        <div class="block">Save local data to NBT.</div>
+                                        <dl class="notes">
+                                            <dt>Throws:</dt>
+                                            <dd><code><a
+                                                    class="external-link"
+                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html"
+                                                    title="class or interface in java.io">IOException</a></code>
+                                                - when an I/O error occurs/
+                                            </dd>
+                                            <dt>Since:</dt>
+                                            <dd>0.1.0</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
+                                    <section class="detail" id="getGlobalPermissions()">
+                                        <h3>getGlobalPermissions</h3>
+                                        <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
+                                                class="return-type"><a
+                                                class="external-link"
+                                                href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html"
+                                                title="class or interface in java.util">Set</a>&lt;<a
+                                                href="../Permission.html"
+                                                title="class in com.ultreon.mods.servercore.server">Permission</a>&gt;</span>&nbsp;<span
+                                                class="element-name">getGlobalPermissions</span>()
+                                        </div>
+                                        <div class="block">Get all globally enabled permissions.</div>
+                                        <dl class="notes">
+                                            <dt>Returns:</dt>
+                                            <dd>all the enabled permissions.</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
+                                    <section class="detail" id="saveLocal()">
+                                        <h3>saveLocal</h3>
+                                        <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
+                                                class="return-type">void</span>&nbsp;<span class="element-name">saveLocal</span>()
+                                        </div>
+                                        <div class="block">Load local data from NBT.</div>
+                                        <dl class="notes">
+                                            <dt>Since:</dt>
+                                            <dd>0.1.0</dd>
+                                        </dl>
+                                    </section>
+                                </li>
                                 <li>
                                     <section class="detail" id="get()">
                                         <h3>get</h3>
@@ -435,6 +555,28 @@ loadScripts(document, 'script');
                                     </section>
                                 </li>
                                 <li>
+                                    <section class="detail" id="player(com.mojang.authlib.GameProfile)">
+                                        <h3>player</h3>
+                                        <div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="ServerPlayerState.html"
+                                                                                         title="class in com.ultreon.mods.servercore.server.state">ServerPlayerState</a></span>&nbsp;<span
+                                                class="element-name">player</span>
+                                            <wbr>
+                                            <span class="parameters">(com.mojang.authlib.GameProfile&nbsp;profile)</span>
+                                        </div>
+                                        <div class="block">Get the player state from game profile. (For offline use)
+                                        </div>
+                                        <dl class="notes">
+                                            <dt>Parameters:</dt>
+                                            <dd><code>profile</code> - the game profile.</dd>
+                                            <dt>Returns:</dt>
+                                            <dd>the player state.</dd>
+                                            <dt>Since:</dt>
+                                            <dd>0.1.0</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
                                     <section class="detail" id="player(java.util.UUID)">
                                         <h3>player</h3>
                                         <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
@@ -483,10 +625,11 @@ loadScripts(document, 'script');
                                     </section>
                                 </li>
                                 <li>
-                                    <section class="detail" id="createRank(java.lang.String,java.lang.String)">
-                                        <h3>createRank</h3>
+                                    <section class="detail" id="addRank(java.lang.String,java.lang.String)">
+                                        <h3>addRank</h3>
                                         <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
-                                                class="return-type">void</span>&nbsp;<span class="element-name">createRank</span>
+                                                class="return-type">void</span>&nbsp;<span
+                                                class="element-name">addRank</span>
                                             <wbr>
                                             <span class="parameters">(<a
                                                     class="external-link"
@@ -506,18 +649,56 @@ loadScripts(document, 'script');
                                     </section>
                                 </li>
                                 <li>
-                                    <section class="detail" id="createRank(com.ultreon.mods.servercore.server.Rank)">
-                                        <h3>createRank</h3>
+                                    <section class="detail" id="addRank(com.ultreon.mods.servercore.server.Rank)">
+                                        <h3>addRank</h3>
                                         <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
-                                                class="return-type">void</span>&nbsp;<span class="element-name">createRank</span>
+                                                class="return-type">void</span>&nbsp;<span
+                                                class="element-name">addRank</span>
                                             <wbr>
                                             <span class="parameters">(<a href="../Rank.html"
                                                                          title="class in com.ultreon.mods.servercore.server">Rank</a>&nbsp;rank)</span>
                                         </div>
-                                        <div class="block">Create from an already instantiated rank.</div>
+                                        <div class="block">Add a rank from an already instantiated one.</div>
                                         <dl class="notes">
                                             <dt>Parameters:</dt>
                                             <dd><code>rank</code> - the rank.</dd>
+                                            <dt>Since:</dt>
+                                            <dd>0.1.0</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
+                                    <section class="detail" id="removeRank(java.lang.String)">
+                                        <h3>removeRank</h3>
+                                        <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
+                                                class="return-type">void</span>&nbsp;<span class="element-name">removeRank</span>
+                                            <wbr>
+                                            <span class="parameters">(<a
+                                                    class="external-link"
+                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html"
+                                                    title="class or interface in java.lang">String</a>&nbsp;id)</span>
+                                        </div>
+                                        <div class="block">Remove a rank.</div>
+                                        <dl class="notes">
+                                            <dt>Parameters:</dt>
+                                            <dd><code>id</code> - the id of the rank.</dd>
+                                            <dt>Since:</dt>
+                                            <dd>0.1.0</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
+                                    <section class="detail" id="getDefaultRank()">
+                                        <h3>getDefaultRank</h3>
+                                        <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
+                                                class="return-type"><a href="../Rank.html"
+                                                                       title="class in com.ultreon.mods.servercore.server">Rank</a></span>&nbsp;<span
+                                                class="element-name">getDefaultRank</span>()
+                                        </div>
+                                        <div class="block">Get the default rank</div>
+                                        <dl class="notes">
+                                            <dt>Returns:</dt>
+                                            <dd>the default rank.</dd>
                                             <dt>Since:</dt>
                                             <dd>0.1.0</dd>
                                         </dl>

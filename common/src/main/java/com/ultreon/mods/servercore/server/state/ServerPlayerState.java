@@ -1,7 +1,9 @@
 package com.ultreon.mods.servercore.server.state;
 
+import com.ultreon.mods.servercore.ServerCore;
 import com.ultreon.mods.servercore.network.Network;
 import com.ultreon.mods.servercore.network.StateSync;
+import com.ultreon.mods.servercore.server.DefaultRank;
 import com.ultreon.mods.servercore.server.Permission;
 import com.ultreon.mods.servercore.server.Rank;
 import net.minecraft.nbt.*;
@@ -13,9 +15,8 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.ultreon.mods.servercore.network.StateSync.INIT_PERMISSIONS;
 
@@ -29,7 +30,7 @@ public class ServerPlayerState extends ServerState {
     private final File baseDir;
     private final File genericDataFile;
     private ServerPlayer player;
-    private final Set<Rank> ranks = new HashSet<>();
+    private final Map<String, Rank> ranks = new HashMap<>();
     private final Set<Permission> permissions = new HashSet<>();
 
     /**
@@ -52,7 +53,10 @@ public class ServerPlayerState extends ServerState {
                 throw new IOException("Failed to create storage directory for player: " + uuid);
             }
         }
+
         load();
+
+        this.ranks.put(main.getDefaultRank().getId(), main.getDefaultRank());
     }
 
     /**
@@ -66,7 +70,7 @@ public class ServerPlayerState extends ServerState {
 
         CompoundTag data = new CompoundTag();
         ListTag permissions = new ListTag();
-        this.ranks.forEach(rank -> rank.getPermissions().forEach(perm -> permissions.add(StringTag.valueOf(perm.id()))));
+        this.ranks.values().forEach(rank -> rank.getPermissions().forEach(perm -> permissions.add(StringTag.valueOf(perm.id()))));
         this.permissions.forEach(perm -> permissions.add(StringTag.valueOf(perm.id())));
         data.put("Permissions", permissions);
         Network.sendStateSync(player, INIT_PERMISSIONS, data);
@@ -91,7 +95,7 @@ public class ServerPlayerState extends ServerState {
                     String rankId = s.getAsString();
                     Rank rank = main.getRank(rankId);
                     if (rank != null) {
-                        this.ranks.add(rank);
+                        this.ranks.put(rankId, rank);
                     }
                 }
             }
@@ -102,13 +106,49 @@ public class ServerPlayerState extends ServerState {
                     this.permissions.add(new Permission(id));
                 }
             }
-        } catch (FileNotFoundException ignored) {
-            // Ignore
+        } catch (FileNotFoundException e) {
+            ServerCore.LOGGER.info("Player state for " + uuid + " not loaded because file didn't exists.");
+        }
+    }
+
+    /**
+     * Save the player state to NBT.
+     *
+     * @since 0.1.0
+     */
+    public void save() {
+        try {
+            // Create base directory if non-existent.
+            if (!baseDir.exists() && !baseDir.mkdirs())
+                throw new IOException("Failed to create directories: " + baseDir.getPath());
+
+            // Create NBT tag.
+            CompoundTag tag = new CompoundTag();
+
+            // Ranks
+            ListTag ranks = new ListTag();
+            for (Rank rank : this.ranks.values()) {
+                ranks.add(StringTag.valueOf(rank.getId()));
+            }
+            tag.put("Ranks", ranks);
+
+            // Permissions
+            ListTag permissions = new ListTag();
+            for (Permission permission : this.permissions) {
+                permissions.add(StringTag.valueOf(permission.id()));
+            }
+            tag.put("Permissions", permissions);
+
+            // Write data.
+            NbtIo.writeCompressed(tag, genericDataFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     /**
      * Receive a data sync from the client.
+     *
      * @param type the type of data.
      * @param data the data to sync.
      */
@@ -206,7 +246,7 @@ public class ServerPlayerState extends ServerState {
      * @since 0.1.0
      */
     public boolean hasPermission(Permission permission) {
-        return ranks.stream().anyMatch(rank -> rank.hasPermission(permission))
+        return ranks.values().stream().anyMatch(rank -> rank.hasPermission(permission))
                 || permissions.stream().anyMatch(perm -> perm.isChild(permission) || perm.equals(permission));
     }
 
@@ -243,7 +283,12 @@ public class ServerPlayerState extends ServerState {
      * @since 0.1.0
      */
     public void addRank(Rank rank) {
-        this.ranks.add(rank);
+        Rank official = main.getRank(rank.getId());
+        if (official == null) throw new IllegalArgumentException("Rank doesn't exist: " + rank.getId());
+        if (official instanceof DefaultRank) throw new IllegalArgumentException("Can't add an default Rank.");
+        if (ranks.containsKey(rank.getId())) return;
+        this.sendBulkAddPermission(official.getPermissions());
+        this.ranks.put(official.getId(), official);
     }
 
     /**
@@ -253,9 +298,40 @@ public class ServerPlayerState extends ServerState {
      * @since 0.1.0
      */
     public void addRank(String id) {
-        Rank rank = main.getRank(id);
-        if (rank == null) return;
-        this.ranks.add(rank);
+        Rank official = main.getRank(id);
+        if (official == null) throw new IllegalArgumentException("Rank doesn't exist: " + id);
+        if (official instanceof DefaultRank) throw new IllegalArgumentException("Can't add an default Rank.");
+        if (ranks.containsKey(id)) return;
+        this.sendBulkAddPermission(official.getPermissions());
+        this.ranks.put(id, official);
+    }
+
+    /**
+     * Remove a rank to the player.
+     *
+     * @param rank the rank to remove.
+     * @since 0.1.0
+     */
+    public void removeRank(Rank rank) {
+        Rank official = ranks.get(rank.getId());
+        if (official instanceof DefaultRank) return;
+        if (!ranks.containsKey(rank.getId())) return;
+        this.sendBulkRemovePermission(official.getPermissions().stream().filter(permission -> !hasPermission(permission)).collect(Collectors.toSet()));
+        this.ranks.remove(rank.getId());
+    }
+
+    /**
+     * Remove a rank from an ID.
+     *
+     * @param id the ID.
+     * @since 0.1.0
+     */
+    public void removeRank(String id) {
+        Rank official = main.getRank(id);
+        if (official instanceof DefaultRank) return;
+        if (!ranks.containsKey(id)) return;
+        this.sendBulkRemovePermission(official.getPermissions().stream().filter(permission -> !hasPermission(permission)).collect(Collectors.toSet()));
+        this.ranks.remove(id);
     }
 
     /**
@@ -266,7 +342,18 @@ public class ServerPlayerState extends ServerState {
      * @since 0.1.0
      */
     public boolean hasRank(Rank rank) {
-        return this.ranks.contains(rank);
+        return this.ranks.containsKey(rank.getId());
+    }
+
+    /**
+     * Check if the player has a certain rank.
+     *
+     * @param id the id of the rank to check for.
+     * @return whether the player has that rank.
+     * @since 0.1.0
+     */
+    public boolean hasRank(String id) {
+        return this.ranks.containsKey(id);
     }
 
     /**
@@ -296,6 +383,24 @@ public class ServerPlayerState extends ServerState {
         if (player != null) {
             CompoundTag data = StateSync.setPermission(permission, false);
             Network.sendStateSync(player, StateSync.SET_PERMISSION, data);
+        }
+    }
+
+    @ApiStatus.Internal
+    private void sendBulkAddPermission(Set<Permission> permissions) {
+        ServerPlayer player = this.player;
+        if (player != null) {
+            CompoundTag data = StateSync.setMultiPermission(permissions, true);
+            Network.sendStateSync(player, StateSync.SET_MULTI_PERMISSIONS, data);
+        }
+    }
+
+    @ApiStatus.Internal
+    private void sendBulkRemovePermission(Set<Permission> permissions) {
+        ServerPlayer player = this.player;
+        if (player != null) {
+            CompoundTag data = StateSync.setMultiPermission(permissions, false);
+            Network.sendStateSync(player, StateSync.SET_MULTI_PERMISSIONS, data);
         }
     }
 }

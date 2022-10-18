@@ -46,13 +46,13 @@ loadScripts(document, 'script');
                     <ul class="sub-nav-list">
                         <li>Summary:&nbsp;</li>
                         <li>Nested&nbsp;|&nbsp;</li>
-                        <li>Field&nbsp;|&nbsp;</li>
+                        <li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
                         <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
                         <li><a href="#method-summary">Method</a></li>
                     </ul>
                     <ul class="sub-nav-list">
                         <li>Detail:&nbsp;</li>
-                        <li>Field&nbsp;|&nbsp;</li>
+                        <li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
                         <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
                         <li><a href="#method-detail">Method</a></li>
                     </ul>
@@ -80,6 +80,11 @@ loadScripts(document, 'script');
                 <div class="inheritance">com.ultreon.mods.servercore.server.Rank</div>
             </div>
             <section class="class-description" id="class-description">
+                <dl class="notes">
+                    <dt>Direct Known Subclasses:</dt>
+                    <dd><code><a href="DefaultRank.html"
+                                 title="class in com.ultreon.mods.servercore.server">DefaultRank</a></code></dd>
+                </dl>
                 <hr>
                 <div class="type-signature"><span class="modifiers">public class </span><span
                         class="element-name type-name-label">Rank</span>
@@ -95,6 +100,30 @@ loadScripts(document, 'script');
             </section>
             <section class="summary">
                 <ul class="summary-list">
+                    <!-- =========== FIELD SUMMARY =========== -->
+                    <li>
+                        <section class="field-summary" id="field-summary">
+                            <h2>Field Summary</h2>
+                            <div class="caption"><span>Fields</span></div>
+                            <div class="summary-table three-column-summary">
+                                <div class="table-header col-first">Modifier and Type</div>
+                                <div class="table-header col-second">Field</div>
+                                <div class="table-header col-last">Description</div>
+                                <div class="col-first even-row-color"><code>protected final <a
+                                        class="external-link"
+                                        href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html"
+                                        title="class or interface in java.util">Set</a>&lt;<a
+                                        href="Permission.html" title="class in com.ultreon.mods.servercore.server">Permission</a>&gt;</code>
+                                </div>
+                                <div class="col-second even-row-color"><code><a class="member-name-link"
+                                                                                href="#permissions">permissions</a></code>
+                                </div>
+                                <div class="col-last even-row-color">
+                                    <div class="block">All the permissions the rank has.</div>
+                                </div>
+                            </div>
+                        </section>
+                    </li>
                     <!-- ======== CONSTRUCTOR SUMMARY ======== -->
                     <li>
                         <section class="constructor-summary" id="constructor-summary">
@@ -359,6 +388,32 @@ loadScripts(document, 'script');
             </section>
             <section class="details">
                 <ul class="details-list">
+                    <!-- ============ FIELD DETAIL =========== -->
+                    <li>
+                        <section class="field-details" id="field-detail">
+                            <h2>Field Details</h2>
+                            <ul class="member-list">
+                                <li>
+                                    <section class="detail" id="permissions">
+                                        <h3>permissions</h3>
+                                        <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span
+                                                class="return-type"><a
+                                                class="external-link"
+                                                href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html"
+                                                title="class or interface in java.util">Set</a>&lt;<a
+                                                href="Permission.html"
+                                                title="class in com.ultreon.mods.servercore.server">Permission</a>&gt;</span>&nbsp;<span
+                                                class="element-name">permissions</span></div>
+                                        <div class="block">All the permissions the rank has.</div>
+                                        <dl class="notes">
+                                            <dt>Since:</dt>
+                                            <dd>0.1.0</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                            </ul>
+                        </section>
+                    </li>
                     <!-- ========= CONSTRUCTOR DETAIL ======== -->
                     <li>
                         <section class="constructor-details" id="constructor-detail">

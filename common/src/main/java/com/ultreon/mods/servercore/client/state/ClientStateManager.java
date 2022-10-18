@@ -5,24 +5,25 @@ import net.minecraft.client.player.LocalPlayer;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 /**
  * Client state manager.
- *
  * @since 0.1.0
  */
 public class ClientStateManager {
     private static ClientStateManager instance;
+    @Nullable
     private MultiplayerState multiplayer;
     private final LocalState local = new LocalState();
 
     private ClientStateManager() {
-        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(this::onJoin);
+        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(player -> Objects.requireNonNull(multiplayer, "Multiplayer state is null while joining.").onJoin(player));
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(this::onQuit);
     }
 
     /**
      * Get the instance of the manager.
-     *
      * @return the instance.
      * @since 0.1.0
      */
@@ -32,7 +33,6 @@ public class ClientStateManager {
 
     /**
      * Get the multiplayer state.
-     *
      * @return the state.
      * @since 0.1.0
      */
@@ -43,7 +43,6 @@ public class ClientStateManager {
 
     /**
      * Initialize the manager.
-     *
      * @since 0.1.0
      */
     @ApiStatus.Internal
@@ -54,17 +53,18 @@ public class ClientStateManager {
     /**
      * Handle joining of servers.
      *
-     * @param localPlayer player joined.
      * @since 0.1.0
      */
     @ApiStatus.Internal
-    private void onJoin(LocalPlayer localPlayer) {
-        multiplayer = new MultiplayerState(localPlayer);
+    public void onJoin() {
+        if (multiplayer != null) {
+            throw new IllegalStateException("Already joined.");
+        }
+        multiplayer = new MultiplayerState();
     }
 
     /**
      * Handle leaving on servers.
-     *
      * @param localPlayer player left.
      * @since 0.1.0
      */

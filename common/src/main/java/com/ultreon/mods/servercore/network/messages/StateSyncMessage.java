@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -59,8 +60,11 @@ public class StateSyncMessage {
      */
     public void apply(Supplier<NetworkManager.PacketContext> contextSupplier) {
         MultiplayerState multiplayer = ClientStateManager.get().getMultiplayer();
-        if (multiplayer != null) {
-            multiplayer.receive(type, data);
+        if (multiplayer == null) {
+            ClientStateManager.get().onJoin();
+            multiplayer = ClientStateManager.get().getMultiplayer();
         }
+        Objects.requireNonNull(multiplayer, "Multiplayer state is unloaded after manually loading while receiving multiplayer messages.");
+        multiplayer.receive(type, data);
     }
 }

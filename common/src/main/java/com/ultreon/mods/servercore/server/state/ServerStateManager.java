@@ -1,16 +1,30 @@
 package com.ultreon.mods.servercore.server.state;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.mojang.authlib.GameProfile;
+import com.ultreon.mods.servercore.ServerCore;
+import com.ultreon.mods.servercore.server.DefaultRank;
 import com.ultreon.mods.servercore.server.Permission;
 import com.ultreon.mods.servercore.server.Rank;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -24,12 +38,103 @@ public class ServerStateManager {
     private static ServerStateManager instance;
     private final MinecraftServer server;
     private final Map<UUID, ServerPlayerState> playerStates = new HashMap<>();
-    private final File baseFile;
+    private final File baseDir;
     private final Map<String, Rank> ranks = new HashMap<>();
+    private final File globalDataFile;
+    private final Set<Permission> globalPermissions = new HashSet<>();
+    private final Rank defaultRank;
 
     private ServerStateManager(MinecraftServer server) {
         this.server = server;
-        this.baseFile = server.getWorldPath(LEVEL_RESOURCE).toFile();
+        this.baseDir = server.getWorldPath(LEVEL_RESOURCE).toFile();
+        this.globalDataFile = new File(this.baseDir, "global.dat");
+
+        List<Resource> resourceStack = server.getResourceManager().getResourceStack(ServerCore.res("sc/permissions.json"));
+        Gson gson = new Gson();
+        resourceStack.forEach(resource -> {
+            try {
+                BufferedReader bufferedReader = resource.openAsReader();
+                JsonObject jsonObject = gson.fromJson(bufferedReader, JsonObject.class);
+                for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                    String permissionId = entry.getKey();
+                    if (entry.getValue() instanceof JsonPrimitive primitive) {
+                        if (primitive.isBoolean() && primitive.getAsBoolean()) {
+                            this.globalPermissions.add(new Permission(permissionId));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        try {
+            loadLocal();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Rank loadedDefRank = getRank("default");
+        addRank(this.defaultRank = loadedDefRank != null ? new DefaultRank(loadedDefRank) : new DefaultRank("Default", this.globalPermissions));
+    }
+
+    /**
+     * Save local data to NBT.
+     *
+     * @throws IOException when an I/O error occurs/
+     * @since 0.1.0
+     */
+    public void loadLocal() throws IOException {
+        try {
+            CompoundTag genericData = NbtIo.readCompressed(globalDataFile);
+            ranks.clear();
+            ListTag ranks = genericData.getList("Ranks", Tag.TAG_COMPOUND);
+            for (Tag tag : ranks) {
+                if (tag instanceof CompoundTag compoundTag) {
+                    Rank rank = new Rank(compoundTag);
+                    this.ranks.put(rank.getId(), rank);
+                }
+            }
+        } catch (FileNotFoundException ignored) {
+            // Ignore
+        }
+    }
+
+    /**
+     * Get all globally enabled permissions.
+     *
+     * @return all the enabled permissions.
+     */
+    public Set<Permission> getGlobalPermissions() {
+        return Collections.unmodifiableSet(globalPermissions);
+    }
+
+    /**
+     * Load local data from NBT.
+     *
+     * @since 0.1.0
+     */
+    public void saveLocal() {
+        try {
+            // Create base directory if non-existent.
+            if (!baseDir.exists() && !baseDir.mkdirs())
+                throw new IOException("Failed to create directories: " + baseDir.getPath());
+
+            // Create NBT tag.
+            CompoundTag tag = new CompoundTag();
+
+            // Ranks
+            ListTag ranks = new ListTag();
+            for (Rank rank : this.ranks.values()) {
+                ranks.add(rank.save());
+            }
+            tag.put("Ranks", ranks);
+
+            // Write data.
+            NbtIo.writeCompressed(tag, globalDataFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -61,6 +166,7 @@ public class ServerStateManager {
      */
     @ApiStatus.Internal
     public static void start(MinecraftServer server) {
+        ServerCore.LOGGER.info("Starting the server-side state manager.");
         instance = new ServerStateManager(server);
     }
 
@@ -71,6 +177,7 @@ public class ServerStateManager {
      */
     @ApiStatus.Internal
     public static void stop() {
+        ServerCore.LOGGER.info("Stopping the server-side state manager.");
         instance = null;
     }
 
@@ -86,6 +193,22 @@ public class ServerStateManager {
     }
 
     /**
+     * Get the player state from game profile. (For offline use)
+     *
+     * @param profile the game profile.
+     * @return the player state.
+     * @since 0.1.0
+     */
+    @Nullable
+    public ServerPlayerState player(GameProfile profile) {
+        UUID id = profile.getId();
+        if (id != null) {
+            return player(id);
+        }
+        return null;
+    }
+
+    /**
      * Get the state of a player using a UUID.
      *
      * @param uuid the player's UUID.
@@ -98,7 +221,7 @@ public class ServerStateManager {
 
     private ServerPlayerState loadPlayer(UUID uuid) {
         try {
-            return new ServerPlayerState(uuid, this, new File(baseFile, "players/" + uuid.toString()));
+            return new ServerPlayerState(uuid, this, new File(baseDir, "players/" + uuid.toString()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -122,18 +245,45 @@ public class ServerStateManager {
      * @param name the name of the rank.
      * @since 0.1.0
      */
-    public void createRank(String id, String name) {
-        this.createRank(new Rank(id, name));
+    public void addRank(String id, String name) {
+        this.addRank(new Rank(id, name));
     }
 
     /**
-     * Create from an already instantiated rank.
+     * Add a rank from an already instantiated one.
      *
      * @param rank the rank.
      * @since 0.1.0
      */
-    public void createRank(Rank rank) {
+    public void addRank(Rank rank) {
+        Rank original = ranks.get(rank.getId());
+        if (rank instanceof DefaultRank) throw new IllegalArgumentException("Default Rank is for internal usage.");
+        if (original != null) throw new IllegalArgumentException("Can't overwrite original rank.");
         this.ranks.put(rank.getId(), rank);
+    }
+
+    /**
+     * Remove a rank.
+     *
+     * @param id the id of the rank.
+     * @since 0.1.0
+     */
+    public void removeRank(String id) {
+        if (ranks.get(id) instanceof DefaultRank) throw new IllegalArgumentException("Can't remove default Rank.");
+        ranks.remove(id);
+        for (ServerPlayerState state : playerStates.values()) {
+            state.removeRank(id);
+        }
+    }
+
+    /**
+     * Get the default rank
+     *
+     * @return the default rank.
+     * @since 0.1.0
+     */
+    public Rank getDefaultRank() {
+        return defaultRank;
     }
 
     /**

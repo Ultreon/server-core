@@ -16,10 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @ApiStatus.Internal
 @Mixin(KeyboardInput.class)
-public class KeyboardInputMixin extends Input {
+public abstract class KeyboardInputMixin extends Input {
     /**
      * Input tick injection.
-     *
      * @param bl arg 1
      * @param f  arg 2
      * @param ci callback info.

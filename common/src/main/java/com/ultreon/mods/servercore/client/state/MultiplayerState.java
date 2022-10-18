@@ -12,8 +12,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.ultreon.mods.servercore.network.StateSync.INIT_PERMISSIONS;
-import static com.ultreon.mods.servercore.network.StateSync.SET_PERMISSION;
+import static com.ultreon.mods.servercore.network.StateSync.*;
 
 /**
  * Multiplayer client state.
@@ -21,17 +20,26 @@ import static com.ultreon.mods.servercore.network.StateSync.SET_PERMISSION;
  * @since 0.1.0
  */
 public class MultiplayerState extends ClientState {
-    private final LocalPlayer player;
+    private LocalPlayer player;
     private final Set<Permission> permissions = new HashSet<>();
 
     /**
      * Create the multiplayer state for the client-side player.
      *
-     * @param player the local player instance.
      * @since 0.1.0
      */
     @ApiStatus.Internal
-    public MultiplayerState(LocalPlayer player) {
+    public MultiplayerState() {
+
+    }
+
+    /**
+     * Handle joining of multiplayer servers..
+     *
+     * @param player the player that joined.
+     * @since 0.1.0
+     */
+    public void onJoin(LocalPlayer player) {
         this.player = player;
     }
 
@@ -59,7 +67,18 @@ public class MultiplayerState extends ClientState {
             boolean allow = data.getBoolean("allow");
             if (allow) permissions.add(new Permission(id));
             else permissions.remove(new Permission(id));
+        } else if (type.equals(SET_MULTI_PERMISSIONS)) {
+            System.out.println("data = " + data);
+            boolean allow = data.getBoolean("allow");
+            ListTag permissions = data.getList("Permissions", Tag.TAG_STRING);
+            permissions.forEach(tag -> {
+                if (tag instanceof StringTag s) {
+                    if (allow) this.permissions.add(new Permission(s.getAsString()));
+                    else this.permissions.remove(new Permission(s.getAsString()));
+                }
+            });
         } else if (type.equals(INIT_PERMISSIONS)) {
+            System.out.println("data = " + data);
             ListTag permissions = data.getList("Permissions", Tag.TAG_STRING);
             this.permissions.clear();
             permissions.forEach(tag -> {
@@ -108,7 +127,6 @@ public class MultiplayerState extends ClientState {
      * @since 0.1.0
      */
     public boolean hasPermission(String permission) {
-        System.out.println(hasPermission(new Permission("minecraft.interaction")));
         return hasPermission(new Permission(permission));
     }
 

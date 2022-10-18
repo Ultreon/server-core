@@ -21,7 +21,6 @@ var tableTab = "table-tab";
 var activeTableTab = "active-table-tab";
 var pathtoroot = "../../../../../";
 loadScripts(document, 'script');
-
 </script>
 <noscript>
     <div>JavaScript is disabled on your browser.</div>
@@ -116,9 +115,18 @@ loadScripts(document, 'script');
                                 <div class="col-first odd-row-color"><code>static final
                                     net.minecraft.resources.ResourceLocation</code></div>
                                 <div class="col-second odd-row-color"><code><a class="member-name-link"
-                                                                               href="#SET_PERMISSION">SET_PERMISSION</a></code>
+                                                                               href="#SET_MULTI_PERMISSIONS">SET_MULTI_PERMISSIONS</a></code>
                                 </div>
                                 <div class="col-last odd-row-color">
+                                    <div class="block">Sync ID for setting multiple permission at once on the client.
+                                    </div>
+                                </div>
+                                <div class="col-first even-row-color"><code>static final
+                                    net.minecraft.resources.ResourceLocation</code></div>
+                                <div class="col-second even-row-color"><code><a class="member-name-link"
+                                                                                href="#SET_PERMISSION">SET_PERMISSION</a></code>
+                                </div>
+                                <div class="col-last even-row-color">
                                     <div class="block">Sync ID for setting a permission on the client.</div>
                                 </div>
                             </div>
@@ -179,6 +187,23 @@ loadScripts(document, 'script');
                                         <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
                                             <code>static net.minecraft.nbt.CompoundTag</code></div>
                                         <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+                                            <code><a class="member-name-link"
+                                                     href="#setMultiPermission(java.util.Set,boolean)">setMultiPermission</a>
+                                                <wbr>
+                                                (<a class="external-link"
+                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html"
+                                                    title="class or interface in java.util">Set</a>&lt;<a
+                                                        href="../server/Permission.html"
+                                                        title="class in com.ultreon.mods.servercore.server">Permission</a>&gt;&nbsp;permissions,
+                                                boolean&nbsp;enable)</code></div>
+                                        <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+                                            <div class="block">Create a NBT tag for the set multiple permissions state
+                                                sync.
+                                            </div>
+                                        </div>
+                                        <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+                                            <code>static net.minecraft.nbt.CompoundTag</code></div>
+                                        <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
                                             <code><a
                                                     class="member-name-link"
                                                     href="#setPermission(com.ultreon.mods.servercore.server.Permission,boolean)">setPermission</a>
@@ -186,7 +211,7 @@ loadScripts(document, 'script');
                                                 (<a href="../server/Permission.html"
                                                     title="class in com.ultreon.mods.servercore.server">Permission</a>&nbsp;permission,
                                                 boolean&nbsp;allow)</code></div>
-                                        <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
                                             <div class="block">Create a NBT tag for the set permission state sync.</div>
                                         </div>
                                     </div>
@@ -257,6 +282,21 @@ loadScripts(document, 'script');
                                     </section>
                                 </li>
                                 <li>
+                                    <section class="detail" id="SET_MULTI_PERMISSIONS">
+                                        <h3>SET_MULTI_PERMISSIONS</h3>
+                                        <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span
+                                                class="return-type">net.minecraft.resources.ResourceLocation</span>&nbsp;<span
+                                                class="element-name">SET_MULTI_PERMISSIONS</span></div>
+                                        <div class="block">Sync ID for setting multiple permission at once on the
+                                            client.
+                                        </div>
+                                        <dl class="notes">
+                                            <dt>Since:</dt>
+                                            <dd>0.1.0</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
                                     <section class="detail" id="INIT_PERMISSIONS">
                                         <h3>INIT_PERMISSIONS</h3>
                                         <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span
@@ -309,6 +349,32 @@ loadScripts(document, 'script');
                                             <dt>Parameters:</dt>
                                             <dd><code>permission</code> - the permission.</dd>
                                             <dd><code>allow</code> - whether to set to allow.</dd>
+                                            <dt>Returns:</dt>
+                                            <dd>the NBT tag.</dd>
+                                        </dl>
+                                    </section>
+                                </li>
+                                <li>
+                                    <section class="detail" id="setMultiPermission(java.util.Set,boolean)">
+                                        <h3>setMultiPermission</h3>
+                                        <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span
+                                                class="return-type">net.minecraft.nbt.CompoundTag</span>&nbsp;<span
+                                                class="element-name">setMultiPermission</span>
+                                            <wbr>
+                                            <span class="parameters">(<a
+                                                    class="external-link"
+                                                    href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html"
+                                                    title="class or interface in java.util">Set</a>&lt;<a
+                                                    href="../server/Permission.html"
+                                                    title="class in com.ultreon.mods.servercore.server">Permission</a>&gt;&nbsp;permissions,
+ boolean&nbsp;enable)</span></div>
+                                        <div class="block">Create a NBT tag for the set multiple permissions state
+                                            sync.
+                                        </div>
+                                        <dl class="notes">
+                                            <dt>Parameters:</dt>
+                                            <dd><code>permissions</code> - the permissions to set.</dd>
+                                            <dd><code>enable</code> - whether to enable or disable.</dd>
                                             <dt>Returns:</dt>
                                             <dd>the NBT tag.</dd>
                                         </dl>

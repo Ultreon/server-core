@@ -4,6 +4,8 @@
   "package": "com.ultreon.mods.servercore.mixin.common",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "MinecraftServerMixin",
+    "PlayerListMixin"
   ],
   "client": [
     "KeyboardInputMixin"

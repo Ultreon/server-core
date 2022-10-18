@@ -106,11 +106,9 @@ loadScripts(document, 'script');
                             <div class="summary-table two-column-summary">
                                 <div class="table-header col-first">Constructor</div>
                                 <div class="table-header col-last">Description</div>
-                                <div class="col-constructor-name even-row-color"><code><a
-                                        class="member-name-link"
-                                        href="#%3Cinit%3E(net.minecraft.client.player.LocalPlayer)">MultiplayerState</a>
-                                    <wbr>
-                                    (net.minecraft.client.player.LocalPlayer&nbsp;player)</code></div>
+                                <div class="col-constructor-name even-row-color"><code><a class="member-name-link"
+                                                                                          href="#%3Cinit%3E()">MultiplayerState</a>()</code>
+                                </div>
                                 <div class="col-last even-row-color">
                                     <div class="block">Create the multiplayer state for the client-side player.</div>
                                 </div>
@@ -228,13 +226,23 @@ loadScripts(document, 'script');
                                         <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code>void</code></div>
                                         <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code><a class="member-name-link"
+                                                     href="#onJoin(net.minecraft.client.player.LocalPlayer)">onJoin</a>
+                                                <wbr>
+                                                (net.minecraft.client.player.LocalPlayer&nbsp;player)</code></div>
+                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <div class="block">Handle joining of multiplayer servers..</div>
+                                        </div>
+                                        <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                            <code>void</code></div>
+                                        <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <code><a
                                                     class="member-name-link"
                                                     href="#receive(net.minecraft.resources.ResourceLocation,net.minecraft.nbt.CompoundTag)">receive</a>
                                                 <wbr>
                                                 (net.minecraft.resources.ResourceLocation&nbsp;type,
                                                 net.minecraft.nbt.CompoundTag&nbsp;data)</code></div>
-                                        <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+                                        <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
                                             <div class="block">Receive a data sync from the server.</div>
                                         </div>
                                     </div>
@@ -292,18 +300,14 @@ loadScripts(document, 'script');
                             <h2>Constructor Details</h2>
                             <ul class="member-list">
                                 <li>
-                                    <section class="detail" id="&lt;init&gt;(net.minecraft.client.player.LocalPlayer)">
+                                    <section class="detail" id="&lt;init&gt;()">
                                         <h3>MultiplayerState</h3>
                                         <div class="member-signature"><span class="annotations">@Internal
-</span><span class="modifiers">public</span>&nbsp;<span class="element-name">MultiplayerState</span>
-                                            <wbr>
-                                            <span class="parameters">(net.minecraft.client.player.LocalPlayer&nbsp;player)</span>
+</span><span class="modifiers">public</span>&nbsp;<span class="element-name">MultiplayerState</span>()
                                         </div>
                                         <div class="block">Create the multiplayer state for the client-side player.
                                         </div>
                                         <dl class="notes">
-                                            <dt>Parameters:</dt>
-                                            <dd><code>player</code> - the local player instance.</dd>
                                             <dt>Since:</dt>
                                             <dd>0.1.0</dd>
                                         </dl>
@@ -317,6 +321,24 @@ loadScripts(document, 'script');
                         <section class="method-details" id="method-detail">
                             <h2>Method Details</h2>
                             <ul class="member-list">
+                                <li>
+                                    <section class="detail" id="onJoin(net.minecraft.client.player.LocalPlayer)">
+                                        <h3>onJoin</h3>
+                                        <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span
+                                                class="return-type">void</span>&nbsp;<span
+                                                class="element-name">onJoin</span>
+                                            <wbr>
+                                            <span class="parameters">(net.minecraft.client.player.LocalPlayer&nbsp;player)</span>
+                                        </div>
+                                        <div class="block">Handle joining of multiplayer servers..</div>
+                                        <dl class="notes">
+                                            <dt>Parameters:</dt>
+                                            <dd><code>player</code> - the player that joined.</dd>
+                                            <dt>Since:</dt>
+                                            <dd>0.1.0</dd>
+                                        </dl>
+                                    </section>
+                                </li>
                                 <li>
                                     <section class="detail" id="getPlayer()">
                                         <h3>getPlayer</h3>

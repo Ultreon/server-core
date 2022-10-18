@@ -1,0 +1,5 @@
+{
+  "minecraft.interactions.walk": true,
+  "minecraft.interactions.jump": true,
+  "minecraft.interactions.sprint": true
+}
