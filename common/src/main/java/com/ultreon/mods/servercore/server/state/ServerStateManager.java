@@ -75,7 +75,8 @@ public class ServerStateManager {
         }
 
         Rank loadedDefRank = getRank("default");
-        addRank(this.defaultRank = loadedDefRank != null ? new DefaultRank(loadedDefRank) : new DefaultRank("Default", this.globalPermissions));
+        this.defaultRank = loadedDefRank != null ? new DefaultRank(loadedDefRank) : new DefaultRank("Default", this.globalPermissions);
+        ranks.put(this.defaultRank.getId(), this.defaultRank);
     }
 
     /**
