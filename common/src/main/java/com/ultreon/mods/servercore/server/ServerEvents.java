@@ -1,9 +1,8 @@
 package com.ultreon.mods.servercore.server;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.ultreon.mods.servercore.server.commands.PermissionCommand;
+import com.ultreon.mods.servercore.server.commands.ServerCoreCommand;
 import com.ultreon.mods.servercore.server.state.ServerStateManager;
-import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
@@ -14,9 +13,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Objects;
@@ -49,14 +46,7 @@ public class ServerEvents {
     }
 
     private void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext, Commands.CommandSelection commandSelection) {
-        PermissionCommand.register(dispatcher);
-    }
-
-    private EventResult onAddEntity(Entity entity, Level level) {
-        if (entity instanceof ServerPlayer player) {
-            this.onJoin(player);
-        }
-        return EventResult.pass();
+        ServerCoreCommand.register(dispatcher);
     }
 
     private void onJoin(ServerPlayer player) {

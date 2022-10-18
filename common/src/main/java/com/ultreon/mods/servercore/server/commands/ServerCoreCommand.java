@@ -15,11 +15,11 @@ import net.minecraft.network.chat.Component;
 import java.util.Collection;
 
 /**
- * {@code /permission} command and it's subcommands + arguments.
+ * {@code /servercore} command and it's subcommands + arguments.
  *
  * @since 0.1.0
  */
-public class PermissionCommand {
+public class ServerCoreCommand {
     /**
      * Register the command using the command dispatcher.
      *
