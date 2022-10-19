@@ -1,22 +1,30 @@
 package com.ultreon.mods.servercore.server;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.ultreon.mods.servercore.server.chat.ChatContext;
+import com.ultreon.mods.servercore.server.chat.ChatFormatter;
 import com.ultreon.mods.servercore.server.commands.ServerCoreCommand;
 import com.ultreon.mods.servercore.server.commands.TopCommand;
+import com.ultreon.mods.servercore.server.event.ChatContextEvent;
 import com.ultreon.mods.servercore.server.state.ServerStateManager;
-import dev.architectury.event.events.common.CommandRegistrationEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
-import dev.architectury.event.events.common.PlayerEvent;
-import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.*;
 import it.unimi.dsi.fastutil.objects.ReferenceArraySet;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -35,8 +43,64 @@ public class ServerEvents {
 
         TickEvent.PLAYER_POST.register(this::onPlayerTick);
         PlayerEvent.PLAYER_QUIT.register(this::onQuit);
+        PlayerEvent.PLAYER_QUIT.register(this::onQuit);
+
+        ChatEvent.DECORATE.register(this::decorateChat);
+        ChatEvent.RECEIVED.register(this::receiveChat);
 
         CommandRegistrationEvent.EVENT.register(this::registerCommands);
+    }
+
+    private void decorateChat(@Nullable ServerPlayer player, ChatEvent.ChatComponent message) {
+        if (player == null) {
+            return;
+        }
+
+        try {
+            ServerStateManager manager = ServerStateManager.get();
+            if (manager == null) return;
+
+            Rank highestRank = manager.player(player).getHighestRank();
+            Component component = message.get();
+            String string = component.getString();
+            ChatContext context = new ChatContext()
+                    .key("username", player.getName().getString())
+                    .key("display-name", player.getDisplayName().getString())
+                    .key("rank-name", highestRank.getName())
+                    .key("position", () -> "x" + player.getBlockX() + ", y" + player.getBlockY() + ", z" + player.getBlockZ())
+                    .key("time", () -> ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_TIME))
+                    .key("date", () -> ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE));
+
+            ChatContextEvent.EVENT.invoker().onChatContext(context, player);
+            ChatFormatter formatter = new ChatFormatter(string, context);
+            message.set(formatter.format().output());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private EventResult receiveChat(@Nullable ServerPlayer player, Component message) {
+        if (player == null) {
+            return null;
+        }
+
+        try {
+            ServerStateManager manager = ServerStateManager.get();
+            if (manager == null) return null;
+
+            String string = message.getString();
+            ChatFormatter formatter = new ChatFormatter(string);
+            ChatFormatter.Results results = formatter.format();
+            if (results.error()) {
+                return EventResult.interruptFalse();
+            }
+            for (ServerPlayer pinged : formatter.format().pinged()) {
+                pinged.playNotifySound(SoundEvents.NOTE_BLOCK_BELL, SoundSource.PLAYERS, 2, 2);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return EventResult.pass();
     }
 
     private void onPlayerTick(Player player) {

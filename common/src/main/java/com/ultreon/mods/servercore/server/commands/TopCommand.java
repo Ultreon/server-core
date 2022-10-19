@@ -44,6 +44,11 @@ public class TopCommand {
         );
     }
 
+    /**
+     * Get the {@code /top} command root.
+     *
+     * @return the command node.
+     */
     public static LiteralCommandNode<CommandSourceStack> getCommand() {
         return command;
     }

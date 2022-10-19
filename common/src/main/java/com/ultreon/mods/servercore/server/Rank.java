@@ -8,6 +8,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,15 +18,16 @@ import java.util.Set;
  * @since 0.1.0
  */
 public class Rank {
-    private final String id;
-    private String name;
-
     /**
      * All the permissions the rank has.
      *
      * @since 0.1.0
      */
     protected final Set<Permission> permissions = new HashSet<>();
+    private final String id;
+    private String prefix;
+    private String name;
+    private int priority;
 
     /**
      * Create a rank from NBT data.
@@ -34,8 +36,10 @@ public class Rank {
      * @since 0.1.0
      */
     public Rank(CompoundTag tag) {
-        this.id = tag.getString("id");
+        this.id = tag.getString("id").toLowerCase(Locale.ROOT);
         this.name = tag.getString("name");
+        this.prefix = tag.getString("prefix");
+        this.priority = tag.getInt("priority");
 
         ListTag permissions = tag.getList("Permissions", Tag.TAG_STRING);
         permissions.forEach(elem -> {
@@ -55,13 +59,30 @@ public class Rank {
      * @param id   the id of the rank.
      * @param name the display name of the rank.
      * @since 0.1.0
+     * @deprecated use {@link #Rank(String, String, String, int)} instead.
      */
+    @Deprecated
     public Rank(String id, String name) {
-        this.id = id;
+        this(id, name, "&l[UNKNOWN] ", 0);
+    }
+
+    /**
+     * Create a rank from an id and name.
+     *
+     * @param id       the id of the rank.
+     * @param name     the display name of the rank.
+     * @param prefix   the chat prefix of the rank.
+     * @param priority the index priority of the rank.
+     * @since 0.1.0
+     */
+    public Rank(String id, String name, String prefix, int priority) {
+        this.id = id.toLowerCase(Locale.ROOT);
         this.name = name;
         if (id.contains(" ")) {
             throw new IllegalArgumentException("Rank contains space.");
         }
+
+        this.prefix = prefix;
     }
 
     /**
@@ -192,6 +213,8 @@ public class Rank {
         tag.put("Permissions", permissions);
         tag.putString("name", name);
         tag.putString("id", id);
+        tag.putString("prefix", prefix);
+        tag.putInt("priority", priority);
         return tag;
     }
 
@@ -206,5 +229,45 @@ public class Rank {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    /**
+     * Get the index priority of the rank.
+     *
+     * @return the priority.
+     * @since 0.1.0
+     */
+    public int getPriority() {
+        return priority;
+    }
+
+    /**
+     * Set the index priority for the rank.
+     *
+     * @param priority the priority to set.
+     * @since 0.1.0
+     */
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    /**
+     * Get the chat prefix.
+     *
+     * @return the prefix.
+     * @since 0.1.0
+     */
+    public String getPrefix() {
+        return prefix;
+    }
+
+    /**
+     * Set the chat prefix.
+     *
+     * @param prefix the prefix to set.
+     * @since 0.1.0
+     */
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 }

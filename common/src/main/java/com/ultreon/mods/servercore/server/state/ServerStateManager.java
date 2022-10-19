@@ -75,7 +75,9 @@ public class ServerStateManager {
         }
 
         Rank loadedDefRank = getRank("default");
-        this.defaultRank = loadedDefRank != null ? new DefaultRank(loadedDefRank) : new DefaultRank("Default", this.globalPermissions);
+        this.defaultRank = loadedDefRank != null
+                ? new DefaultRank(loadedDefRank)
+                : new DefaultRank("Default", "&8[&7Default&8] ", this.globalPermissions);
         ranks.put(this.defaultRank.getId(), this.defaultRank);
     }
 
@@ -245,9 +247,24 @@ public class ServerStateManager {
      * @param id   the id of the rank.
      * @param name the name of the rank.
      * @since 0.1.0
+     * @deprecated use {@link #addRank(String, String, String, int)} instead.
      */
+    @Deprecated
     public void addRank(String id, String name) {
-        this.addRank(new Rank(id, name));
+        addRank(new Rank(id, name));
+    }
+
+    /**
+     * Create a rank.
+     *
+     * @param id       the id of the rank.
+     * @param name     the display name of the rank.
+     * @param prefix   the chat prefix of the rank.
+     * @param priority the index priority of the rank.
+     * @since 0.1.0
+     */
+    public void addRank(String id, String name, String prefix, int priority) {
+        this.addRank(new Rank(id, name, prefix, priority));
     }
 
     /**
@@ -275,6 +292,26 @@ public class ServerStateManager {
         for (ServerPlayerState state : playerStates.values()) {
             state.removeRank(id);
         }
+    }
+
+    /**
+     * Check if a rank exists.
+     *
+     * @param id the id of the rank.
+     * @return whether it exists.
+     */
+    public boolean hasRank(String id) {
+        return ranks.containsKey(id);
+    }
+
+    /**
+     * Get all the registered ranks
+     *
+     * @return all the ranks.
+     * @since 0.1.0
+     */
+    public Collection<Rank> getRanks() {
+        return ranks.values();
     }
 
     /**

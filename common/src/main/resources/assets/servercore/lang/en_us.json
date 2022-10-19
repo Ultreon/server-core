@@ -1,3 +1,10 @@
 {
-  "commands.servercore._.user_not_found": "User with that name / uuid wasn't found."
+  "commands.servercore._.user_not_found": "User with that name / uuid wasn't found.",
+  "commands.servercore._.manager_offline": "Server state manager is offline, how did that happen?",
+  "commands.servercore._.offline": "Server is offline, how did that happen?",
+  "command.servercore.ranks.not_found": "Rank \"%s\" doesn't exists",
+  "command.servercore.ranks.created": "Successfully created rank: %s",
+  "command.servercore.ranks.prefix_set": "Successfully set prefix of rank %1$s to: %2$s",
+  "command.servercore.ranks.name_set": "Successfully set prefix of rank %1$s to: %2$s",
+  "command.servercore.ranks.priority_set": "Successfully set prefix of rank %1$s to: %2$s"
 }

@@ -22,6 +22,7 @@ import static com.ultreon.mods.servercore.network.StateSync.INIT_PERMISSIONS;
 
 /**
  * Server player state.
+ *
  * @since 0.1.0
  */
 public class ServerPlayerState extends ServerState {
@@ -29,12 +30,13 @@ public class ServerPlayerState extends ServerState {
     private final ServerStateManager main;
     private final File baseDir;
     private final File genericDataFile;
-    private ServerPlayer player;
     private final Map<String, Rank> ranks = new HashMap<>();
     private final Set<Permission> permissions = new HashSet<>();
+    private ServerPlayer player;
 
     /**
      * Create an instance of the player state class.
+     *
      * @param uuid       the player's UUID.
      * @param main       the state manager.
      * @param storageDir the directory where the data is stored.
@@ -61,6 +63,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Handle joining of the player.
+     *
      * @param player the player joined.
      * @since 0.1.0
      */
@@ -78,6 +81,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Handle leaving of the player.
+     *
      * @since 0.1.0
      */
     @ApiStatus.Internal
@@ -157,6 +161,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * The bound player if online.
+     *
      * @return the player. (null if offline).
      * @since 0.1.0
      */
@@ -167,6 +172,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Check if the player is online.
+     *
      * @return whether the player is online.
      * @since 0.1.0
      */
@@ -176,6 +182,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Check if the player is offline.
+     *
      * @return whether the player is offline.
      * @since 0.1.0
      */
@@ -185,6 +192,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Add a permission to the player.
+     *
      * @param permission the permission to add.
      * @since 0.1.0
      */
@@ -194,6 +202,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Add a permission to the player.
+     *
      * @param permission the permission to add.
      * @since 0.1.0
      */
@@ -208,6 +217,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Remove a permission to the player.
+     *
      * @param permission the permission to remove.
      * @since 0.1.0
      */
@@ -217,6 +227,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Remove a permission to the player.
+     *
      * @param permission the permission to remove.
      * @since 0.1.0
      */
@@ -231,6 +242,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Check if the player has a permission.
+     *
      * @param permission the permission to check for.
      * @return whether the player has that permission.
      * @since 0.1.0
@@ -241,6 +253,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Check if the player has a permission.
+     *
      * @param permission the permission to check for.
      * @return whether the player has that permission.
      * @since 0.1.0
@@ -252,6 +265,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Get all the permissions the player has.
+     *
      * @return all the permissions.
      * @since 0.1.0
      */
@@ -261,6 +275,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Get the bound player's UUID.
+     *
      * @return the UUID.
      * @since 0.1.0
      */
@@ -270,6 +285,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Get the base directory of where the data is stored/
+     *
      * @return the base storage directory.
      * @since 0.1.0
      */
@@ -279,6 +295,7 @@ public class ServerPlayerState extends ServerState {
 
     /**
      * Add a rank to the player.
+     *
      * @param rank the rank to add.
      * @since 0.1.0
      */
@@ -402,5 +419,25 @@ public class ServerPlayerState extends ServerState {
             CompoundTag data = StateSync.setMultiPermission(permissions, false);
             Network.sendStateSync(player, StateSync.SET_MULTI_PERMISSIONS, data);
         }
+    }
+
+    /**
+     * Get the highest rank the player has.
+     *
+     * @return the highest rank.
+     * @since 0.1.0
+     */
+    public Rank getHighestRank() {
+        int cur = Integer.MIN_VALUE;
+        Rank curRank = null;
+        for (Rank rank : ranks.values()) {
+            int priority = rank.getPriority();
+            if (priority > cur) {
+                cur = priority;
+                curRank = rank;
+            }
+        }
+
+        return curRank;
     }
 }
