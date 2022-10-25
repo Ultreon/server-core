@@ -34,7 +34,7 @@ public class PlayerTeleports {
         PlayerTeleports destination = manager.get(uuid);
         TeleportRequest request = TeleportRequest.inbound(uuid, this);
 
-        destination.receiveInbound(request)
+        destination.receiveInbound(request);
     }
 
     private void receiveInbound(TeleportRequest request) {
