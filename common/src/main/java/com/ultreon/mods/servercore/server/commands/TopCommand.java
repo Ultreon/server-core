@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import java.util.Objects;
 
 /**
- * {@code /servercore} command and it's subcommands + arguments.
+ * {@code /top} command and it's subcommands + arguments.
  *
  * @since 0.1.0
  */

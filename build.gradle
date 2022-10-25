@@ -1,12 +1,29 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "0.11.0-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "0.12.0-SNAPSHOT" apply false
+    id "io.github.pacifistmc.forgix" version "1.2.2"
 }
-
-version "${mod_version}+${System.getenv("GITHUB_BUILD_NUMBER") == null ? "local" : System.getenv("GITHUB_BUILD_NUMBER")}"
 
 architectury {
     minecraft = rootProject.minecraft_version
+}
+
+version = "${mod_version}-${System.getenv("GITHUB_BUILD_NUMBER") == null ? "local" : System.getenv("GITHUB_BUILD_NUMBER")}"
+
+forgix {
+    group = "com.ultreon.mods"
+    mergedJarName = "server-core-${version}.jar"
+    outputDir = "build/libs/merged"
+
+    forge {
+        projectName = "merge-forge"
+        jarLocation = "build/libs/server-core-${version}.jar"
+    }
+
+    fabric {
+        projectName = "merge-fabric"
+        jarLocation = "build/libs/server-core-${version}.jar"
+    }
 }
 
 subprojects {
@@ -51,3 +68,7 @@ allprojects {
         withSourcesJar()
     }
 }
+
+mergeJars.mustRunAfter build
+mergeJars.mustRunAfter ":merge-fabric:remapJar"
+mergeJars.mustRunAfter ":merge-forge:remapJar"

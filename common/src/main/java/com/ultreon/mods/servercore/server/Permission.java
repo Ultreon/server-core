@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * @since 0.1.0
  */
 public record Permission(String id) implements Comparable<Permission> {
-    private static final Pattern PATTERN = Pattern.compile("[a-z]+(\\.[a-z]+)*");
+    private static final Pattern PATTERN = Pattern.compile("[a-z_]+(\\.[a-z_]+)*");
 
     /**
      * Instantiate a permission object.

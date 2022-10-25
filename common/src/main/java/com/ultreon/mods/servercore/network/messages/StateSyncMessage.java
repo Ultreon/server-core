@@ -1,5 +1,6 @@
 package com.ultreon.mods.servercore.network.messages;
 
+import com.google.common.base.Preconditions;
 import com.ultreon.mods.servercore.client.state.ClientStateManager;
 import com.ultreon.mods.servercore.client.state.MultiplayerState;
 import dev.architectury.networking.NetworkManager;
@@ -38,6 +39,8 @@ public class StateSyncMessage {
      * @since 0.1.0
      */
     public StateSyncMessage(ResourceLocation type, CompoundTag data) {
+        Preconditions.checkNotNull(type, "Sync type should not be null.");
+        Preconditions.checkNotNull(data, "Sync data should not be null.");
         this.type = type;
         this.data = data;
     }

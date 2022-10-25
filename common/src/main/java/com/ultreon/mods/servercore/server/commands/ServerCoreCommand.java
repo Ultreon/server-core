@@ -23,6 +23,7 @@ import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.network.chat.Component;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * {@code /servercore} command and it's subcommands + arguments.
@@ -40,9 +41,9 @@ public class ServerCoreCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         command = dispatcher.register(Commands.literal("servercore")
                 .then(Commands.literal("cmd")
-                        .then(Commands.literal("top")
-                                .redirect(TopCommand.getCommand())
-                        )
+                        .then(Commands.literal("top").fork(TopCommand.getCommand(), context -> List.of(context.getSource())))
+                        .then(Commands.literal("gm").fork(GmCommand.getCommand(), context -> List.of(context.getSource())))
+                        .then(Commands.literal("sudo").fork(SudoCommand.getCommand(), context -> List.of(context.getSource())))
                 ).then(Commands.literal("user")
                         .then(Commands.argument("user", GameProfileArgument.gameProfile())
                                 .then(Commands.literal("perms")

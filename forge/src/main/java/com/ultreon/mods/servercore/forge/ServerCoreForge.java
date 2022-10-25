@@ -20,7 +20,7 @@ public class ServerCoreForge {
      */
     @ApiStatus.Internal
     public ServerCoreForge() {
-        // Submit our event bus to let architectury register our content on the right time
+        // Submit our event bus to let architectury initNop our content on the right time
         EventBuses.registerModEventBus(ServerCore.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         ServerCore.init();
     }

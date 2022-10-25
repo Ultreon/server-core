@@ -3,7 +3,9 @@ package com.ultreon.mods.servercore.server;
 import com.mojang.brigadier.CommandDispatcher;
 import com.ultreon.mods.servercore.server.chat.ChatContext;
 import com.ultreon.mods.servercore.server.chat.ChatFormatter;
+import com.ultreon.mods.servercore.server.commands.GmCommand;
 import com.ultreon.mods.servercore.server.commands.ServerCoreCommand;
+import com.ultreon.mods.servercore.server.commands.SudoCommand;
 import com.ultreon.mods.servercore.server.commands.TopCommand;
 import com.ultreon.mods.servercore.server.event.ChatContextEvent;
 import com.ultreon.mods.servercore.server.state.ServerStateManager;
@@ -112,6 +114,8 @@ public class ServerEvents {
 
     private void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext, Commands.CommandSelection commandSelection) {
         TopCommand.register(dispatcher);
+        GmCommand.register(dispatcher);
+        SudoCommand.register(dispatcher);
         ServerCoreCommand.register(dispatcher);
     }
 

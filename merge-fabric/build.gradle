@@ -7,16 +7,14 @@ version rootProject.version
 
 architectury {
     platformSetupLoomIde()
-    forge()
+    fabric()
 }
 
-loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
 
-    forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-    }
+repositories {
+    maven { url = "https://cursemaven.com" }
+    maven { url "https://maven.terraformersmc.com/releases" }
+    mavenCentral()
 }
 
 configurations {
@@ -24,35 +22,24 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+    developmentFabric.extendsFrom common
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
-    // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
-
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    include(project(":fabric"))
 }
 
 processResources {
-    inputs.property "version", project.version
 
-    filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
-    }
 }
 
 shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
-
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
 }
 
 remapJar {
+    injectAccessWidener = true
     input.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null
@@ -76,7 +63,7 @@ components.java {
 
 publishing {
     publications {
-        mavenForge(MavenPublication) {
+        mavenFabric(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
         }

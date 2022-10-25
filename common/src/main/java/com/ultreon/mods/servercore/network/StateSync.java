@@ -65,6 +65,6 @@ public class StateSync {
         }
         tag.put("Permissions", list);
         tag.putBoolean("enable", enable);
-        return null;
+        return tag;
     }
 }

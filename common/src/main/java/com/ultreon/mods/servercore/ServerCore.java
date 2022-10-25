@@ -1,9 +1,11 @@
 package com.ultreon.mods.servercore;
 
 import com.ultreon.mods.servercore.client.ClientEvents;
+import com.ultreon.mods.servercore.init.ModDebugGameRules;
 import com.ultreon.mods.servercore.network.Network;
 import com.ultreon.mods.servercore.server.ServerEvents;
 import dev.architectury.event.events.common.LifecycleEvent;
+import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
 import net.minecraft.resources.ResourceLocation;
@@ -38,9 +40,16 @@ public class ServerCore {
      */
     @ApiStatus.Internal
     public static void init() {
+        // Initialize events handler classes.
         EnvExecutor.runInEnv(Env.CLIENT, () -> ClientEvents::init);
         ServerEvents.init();
 
+        // Init some registration classes.
+        if (Platform.isDevelopmentEnvironment()) {
+            ModDebugGameRules.initNop();
+        }
+
+        // Listen to the common setup event.
         LifecycleEvent.SETUP.register(ServerCore::setup);
     }
 
