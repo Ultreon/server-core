@@ -9,9 +9,15 @@ import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.UUID;
 
 /**
  * Main mod class.
@@ -67,5 +73,11 @@ public class ServerCore {
      */
     public static ResourceLocation res(String path) {
         return new ResourceLocation(MOD_ID, path);
+    }
+
+    @Nullable
+    public static Entity getEntity(MinecraftServer server, UUID entity) {
+        for (ServerLevel level : server.getAllLevels()) return level.getEntity(entity);
+        return null;
     }
 }

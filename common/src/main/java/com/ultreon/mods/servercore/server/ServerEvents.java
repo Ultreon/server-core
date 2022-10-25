@@ -37,6 +37,7 @@ import java.util.Objects;
  */
 public class ServerEvents {
     private static ServerEvents instance;
+    private static MinecraftServer server;
     private final ReferenceArraySet<Player> hasTicked = new ReferenceArraySet<>();
 
     private ServerEvents() {
@@ -51,6 +52,10 @@ public class ServerEvents {
         ChatEvent.RECEIVED.register(this::receiveChat);
 
         CommandRegistrationEvent.EVENT.register(this::registerCommands);
+    }
+
+    public static MinecraftServer server() {
+        return server;
     }
 
     private void decorateChat(@Nullable ServerPlayer player, ChatEvent.ChatComponent message) {
@@ -144,10 +149,12 @@ public class ServerEvents {
     }
 
     private void start(MinecraftServer server) {
+        ServerEvents.server = server;
         ServerStateManager.start(server);
     }
 
     private void stop(MinecraftServer server) {
+        ServerEvents.server = null;
         ServerStateManager.stop();
     }
 
