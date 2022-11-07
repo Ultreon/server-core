@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.ultreon.mods.servercore.client.state.ClientStateManager;
 import com.ultreon.mods.servercore.client.state.MultiplayerState;
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -64,7 +65,7 @@ public class StateSyncMessage {
     public void apply(Supplier<NetworkManager.PacketContext> contextSupplier) {
         MultiplayerState multiplayer = ClientStateManager.get().getMultiplayer();
         if (multiplayer == null) {
-            ClientStateManager.get().onJoin();
+            ClientStateManager.get().onJoin(Minecraft.getInstance().player);
             multiplayer = ClientStateManager.get().getMultiplayer();
         }
         Objects.requireNonNull(multiplayer, "Multiplayer state is unloaded after manually loading while receiving multiplayer messages.");

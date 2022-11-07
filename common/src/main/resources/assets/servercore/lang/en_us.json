@@ -6,5 +6,11 @@
   "command.servercore.ranks.created": "Successfully created rank: %s",
   "command.servercore.ranks.prefix_set": "Successfully set prefix of rank %1$s to: %2$s",
   "command.servercore.ranks.name_set": "Successfully set prefix of rank %1$s to: %2$s",
-  "command.servercore.ranks.priority_set": "Successfully set prefix of rank %1$s to: %2$s"
+  "command.servercore.ranks.priority_set": "Successfully set prefix of rank %1$s to: %2$s",
+  "command.servercore.ranks.unable_to_set": "Unable to set rank %s",
+  "command.servercore.ranks.unable_to_edit": "Unable to edit rank %s",
+  "command.servercore.ranks.unable_to_add": "Unable to add rank %s",
+  "command.servercore.ranks.unable_to_remove": "Unable to remove rank %s",
+  "command.servercore.ranks.unable_to_create": "Unable to create rank %s",
+  "command.servercore.ranks.unable_to_delete": "Unable to delete rank %s"
 }

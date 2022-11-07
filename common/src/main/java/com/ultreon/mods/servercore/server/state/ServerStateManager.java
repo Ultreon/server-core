@@ -245,7 +245,7 @@ public class ServerStateManager {
      * Create a rank.
      *
      * @param id   the id of the rank.
-     * @param name the name of the rank.
+     * @param name the getObjName of the rank.
      * @since 0.1.0
      * @deprecated use {@link #addRank(String, String, String, int)} instead.
      */
@@ -258,7 +258,7 @@ public class ServerStateManager {
      * Create a rank.
      *
      * @param id       the id of the rank.
-     * @param name     the display name of the rank.
+     * @param name     the display getObjName of the rank.
      * @param prefix   the chat prefix of the rank.
      * @param priority the index priority of the rank.
      * @since 0.1.0

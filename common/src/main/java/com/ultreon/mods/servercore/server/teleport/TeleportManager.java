@@ -1,17 +1,19 @@
 package com.ultreon.mods.servercore.server.teleport;
 
 import com.mojang.authlib.GameProfile;
+import com.ultreon.mods.servercore.server.ServerHooks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class TeleportManager {
+    static final Map<UUID, TeleportRequest> ACTIVE_REQUESTS = new ConcurrentHashMap<>();
     private static TeleportManager instance;
-    private final Map<UUID, PlayerTeleports> playerTp = new HashMap<>();
     private final MinecraftServer server;
 
     @ApiStatus.Internal
@@ -23,20 +25,40 @@ public class TeleportManager {
         return instance;
     }
 
+    public static UUID nextReqId() {
+        UUID uuid;
+
+        do {
+            uuid = UUID.randomUUID();
+        } while (ACTIVE_REQUESTS.containsKey(uuid));
+
+        return uuid;
+    }
+
+    @ApiStatus.Internal
+    public static void terminateRequest(UUID id) {
+        ACTIVE_REQUESTS.remove(id);
+    }
+
+    @ApiStatus.Internal
+    public static void registerRequest(TeleportRequest request) {
+        ACTIVE_REQUESTS.put(request.id(), request);
+    }
+
     public PlayerTeleports get(UUID playerId) {
-        return getOrCreate(playerId);
+        return get(ServerHooks.player(playerId));
     }
 
     public PlayerTeleports get(Player player) {
-        return getOrCreate(player.getUUID());
+        return cast(player);
     }
 
     public PlayerTeleports get(GameProfile player) {
-        return getOrCreate(player.getId());
+        return get(player.getId());
     }
 
-    private PlayerTeleports getOrCreate(UUID playerId) {
-        return playerTp.computeIfAbsent(playerId, id -> new PlayerTeleports(this, id));
+    private PlayerTeleports cast(Player player) {
+        return ((PlayerTeleports)player);
     }
 
     @ApiStatus.Internal

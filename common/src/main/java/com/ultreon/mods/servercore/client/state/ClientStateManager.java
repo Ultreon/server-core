@@ -2,6 +2,7 @@ package com.ultreon.mods.servercore.client.state;
 
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +19,7 @@ public class ClientStateManager {
     private final LocalState local = new LocalState();
 
     private ClientStateManager() {
-        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(player -> Objects.requireNonNull(multiplayer, "Multiplayer state is null while joining.").onJoin(player));
+        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(this::onJoin);
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(this::onQuit);
     }
 
@@ -56,11 +57,12 @@ public class ClientStateManager {
      * @since 0.1.0
      */
     @ApiStatus.Internal
-    public void onJoin() {
+    public void onJoin(LocalPlayer player) {
         if (multiplayer != null) {
-            throw new IllegalStateException("Already joined.");
+            return;
         }
         multiplayer = new MultiplayerState();
+        Objects.requireNonNull(multiplayer, "Multiplayer state is null while joining.").onJoin(player);
     }
 
     /**

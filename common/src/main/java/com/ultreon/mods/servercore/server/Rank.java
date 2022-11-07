@@ -37,7 +37,7 @@ public class Rank {
      */
     public Rank(CompoundTag tag) {
         this.id = tag.getString("id").toLowerCase(Locale.ROOT);
-        this.name = tag.getString("name");
+        this.name = tag.getString("getObjName");
         this.prefix = tag.getString("prefix");
         this.priority = tag.getInt("priority");
 
@@ -54,10 +54,10 @@ public class Rank {
     }
 
     /**
-     * Create a rank from an id and name.
+     * Create a rank from an id and getObjName.
      *
      * @param id   the id of the rank.
-     * @param name the display name of the rank.
+     * @param name the display getObjName of the rank.
      * @since 0.1.0
      * @deprecated use {@link #Rank(String, String, String, int)} instead.
      */
@@ -67,10 +67,10 @@ public class Rank {
     }
 
     /**
-     * Create a rank from an id and name.
+     * Create a rank from an id and getObjName.
      *
      * @param id       the id of the rank.
-     * @param name     the display name of the rank.
+     * @param name     the display getObjName of the rank.
      * @param prefix   the chat prefix of the rank.
      * @param priority the index priority of the rank.
      * @since 0.1.0
@@ -96,9 +96,9 @@ public class Rank {
     }
 
     /**
-     * Get the rank name.
+     * Get the rank getObjName.
      *
-     * @return the name.
+     * @return the getObjName.
      * @since 0.1.0
      */
     public String getName() {
@@ -106,9 +106,9 @@ public class Rank {
     }
 
     /**
-     * Get the rank name.
+     * Get the rank getObjName.
      *
-     * @param name the name to set.
+     * @param name the getObjName to set.
      * @since 0.1.0
      */
     public void setName(String name) {
@@ -211,7 +211,7 @@ public class Rank {
         ListTag permissions = new ListTag();
         this.permissions.forEach(permission -> permissions.add(StringTag.valueOf(permission.id())));
         tag.put("Permissions", permissions);
-        tag.putString("name", name);
+        tag.putString("getObjName", name);
         tag.putString("id", id);
         tag.putString("prefix", prefix);
         tag.putInt("priority", priority);

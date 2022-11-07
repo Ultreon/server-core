@@ -96,7 +96,7 @@ public class MultiplayerState extends ClientState {
      * @since 0.1.0
      */
     public boolean canWalk() {
-        return hasPermission("minecraft.interaction.walk");
+        return hasPermission("minecraft.interactions.walk");
     }
 
     /**
@@ -106,7 +106,7 @@ public class MultiplayerState extends ClientState {
      * @since 0.1.0
      */
     public boolean canJump() {
-        return hasPermission("minecraft.interaction.jump");
+        return hasPermission("minecraft.interactions.jump");
     }
 
     /**
@@ -116,7 +116,7 @@ public class MultiplayerState extends ClientState {
      * @since 0.1.0
      */
     public boolean canSprint() {
-        return hasPermission("minecraft.interaction.sprint");
+        return hasPermission("minecraft.interactions.sprint");
     }
 
     /**

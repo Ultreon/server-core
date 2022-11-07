@@ -2,5 +2,8 @@
   "minecraft.interactions.walk": true,
   "minecraft.interactions.jump": true,
   "minecraft.interactions.sprint": true,
-  "servercore.commands.top": false
+  "servercore.commands.top": false,
+  "servercore.commands.tp.ask": true,
+  "servercore.commands.tp.accept": true,
+  "servercore.commands.tp.deny": true
 }

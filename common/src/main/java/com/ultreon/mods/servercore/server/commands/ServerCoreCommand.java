@@ -150,8 +150,8 @@ public class ServerCoreCommand {
                                                 )
                                         ).then(Commands.literal("set")
                                                 .requires(commandSourceStack -> ServerStateManager.get() != null && ServerStateManager.get().hasPermission(commandSourceStack, "servercore.ranks.edit.properties"))
-                                                .then(Commands.literal("name")
-                                                        .requires(commandSourceStack -> ServerStateManager.get() != null && ServerStateManager.get().hasPermission(commandSourceStack, "servercore.ranks.edit.properties.name"))
+                                                .then(Commands.literal("getObjName")
+                                                        .requires(commandSourceStack -> ServerStateManager.get() != null && ServerStateManager.get().hasPermission(commandSourceStack, "servercore.ranks.edit.properties.getObjName"))
                                                         .then(Commands.argument("value", StringArgumentType.string())
                                                                 .executes(ServerCoreCommand::setNameOfRank)
                                                         )
@@ -173,7 +173,7 @@ public class ServerCoreCommand {
                         ).then(Commands.literal("create")
                                 .requires(commandSourceStack -> ServerStateManager.get() != null && ServerStateManager.get().hasPermission(commandSourceStack, "servercore.ranks.create"))
                                 .then(Commands.argument("id", StringArgumentType.string())
-                                        .then(Commands.argument("name", StringArgumentType.string())
+                                        .then(Commands.argument("getObjName", StringArgumentType.string())
                                                 .then(Commands.argument("prefix", StringArgumentType.string())
                                                         .then(Commands.argument("priority", IntegerArgumentType.integer())
                                                                 .executes(ServerCoreCommand::createRank)
@@ -191,9 +191,6 @@ public class ServerCoreCommand {
         String name = StringArgumentType.getString(context, "value");
         ServerStateManager manager = ServerStateManager.get();
         if (manager != null && manager.hasRank(rankId)) {
-            if (manager.getRank(rankId) instanceof DefaultRank) {
-                throw new SimpleCommandExceptionType(Component.translatable("command.servercore.ranks.unable_to_remove", rankId)).create();
-            }
             manager.getRank(rankId).setName(name);
             context.getSource().sendSuccess(Component.translatable("command.servercore.ranks.name_set", rankId, name), true);
             return 1;
@@ -207,9 +204,6 @@ public class ServerCoreCommand {
         String prefix = StringArgumentType.getString(context, "value");
         ServerStateManager manager = ServerStateManager.get();
         if (manager != null && manager.hasRank(rankId)) {
-            if (manager.getRank(rankId) instanceof DefaultRank) {
-                throw new SimpleCommandExceptionType(Component.translatable("command.servercore.ranks.unable_to_remove", rankId)).create();
-            }
             ChatFormatter formatter = new ChatFormatter(prefix, new ChatContext(), false, true);
             ChatFormatter.Results prefixFormatted = formatter.format();
             manager.getRank(rankId).setPrefix(prefix);
@@ -226,7 +220,7 @@ public class ServerCoreCommand {
         ServerStateManager manager = ServerStateManager.get();
         if (manager != null && manager.hasRank(rankId)) {
             if (manager.getRank(rankId) instanceof DefaultRank) {
-                throw new SimpleCommandExceptionType(Component.translatable("command.servercore.ranks.unable_to_remove", rankId)).create();
+                throw new SimpleCommandExceptionType(Component.translatable("command.servercore.ranks.unable_to_edit", rankId)).create();
             }
             manager.getRank(rankId).setPriority(priority);
             context.getSource().sendSuccess(Component.translatable("command.servercore.ranks.priority_set", rankId, priority), true);
@@ -238,12 +232,15 @@ public class ServerCoreCommand {
 
     private static int createRank(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String id = StringArgumentType.getString(context, "id");
-        String name = StringArgumentType.getString(context, "name");
+        String name = StringArgumentType.getString(context, "getObjName");
         String prefix = StringArgumentType.getString(context, "prefix");
         int priority = IntegerArgumentType.getInteger(context, "priority");
 
         ServerStateManager manager = ServerStateManager.get();
         if (manager != null) {
+            if (manager.getRank(id) instanceof DefaultRank) {
+                throw new SimpleCommandExceptionType(Component.translatable("command.servercore.ranks.unable_to_create", id)).create();
+            }
             manager.addRank(id, name, prefix, priority);
             context.getSource().sendSuccess(Component.translatable("command.servercore.ranks.created", id), true);
             return 1;
@@ -257,9 +254,6 @@ public class ServerCoreCommand {
         String permissionId = StringArgumentType.getString(context, "permission");
         ServerStateManager manager = ServerStateManager.get();
         if (manager != null && manager.hasRank(rankId)) {
-            if (manager.getRank(rankId) instanceof DefaultRank) {
-                throw new SimpleCommandExceptionType(Component.translatable("command.servercore.ranks.unable_to_remove", rankId)).create();
-            }
             manager.getRank(rankId).addPermission(new Permission(permissionId));
             return 1;
         } else {
@@ -272,9 +266,6 @@ public class ServerCoreCommand {
         String permissionId = StringArgumentType.getString(context, "permission");
         ServerStateManager manager = ServerStateManager.get();
         if (manager != null && manager.hasRank(rankId)) {
-            if (manager.getRank(rankId) instanceof DefaultRank) {
-                throw new SimpleCommandExceptionType(Component.translatable("command.servercore.ranks.unable_to_remove", rankId)).create();
-            }
             manager.getRank(rankId).removePermission(new Permission(permissionId));
             return 1;
         } else {
@@ -288,7 +279,7 @@ public class ServerCoreCommand {
             ServerStateManager manager = ServerStateManager.get();
             if (manager != null && manager.hasRank(rankId)) {
                 if (manager.getRank(rankId) instanceof DefaultRank) {
-                    throw new SimpleCommandExceptionType(Component.translatable("command.servercore.ranks.unable_to_remove", rankId)).create();
+                    throw new SimpleCommandExceptionType(Component.translatable("command.servercore.ranks.unable_to_add", rankId)).create();
                 }
                 state.addRank(rankId);
             } else {

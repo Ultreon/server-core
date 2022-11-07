@@ -6,12 +6,14 @@
   "mixins": [
     "CommandsMixin",
     "MinecraftServerMixin",
-    "PlayerListMixin"
+    "PlayerListMixin",
+    "PlayerMixin"
   ],
   "client": [
     "KeyboardInputMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.ultreon.mods.servercore.mixin.SecurityPlugin"
 }

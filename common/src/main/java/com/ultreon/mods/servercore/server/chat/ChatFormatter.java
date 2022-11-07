@@ -12,6 +12,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static net.minecraft.ChatFormatting.*;
 
@@ -24,6 +25,7 @@ import static net.minecraft.ChatFormatting.*;
 public class ChatFormatter {
     private static final MutableComponent ERROR = Component.literal("ERROR").withStyle(style -> style
             .withColor(TextColor.fromRgb(0xeb5234)).withBold(true));
+    private static final boolean SHOW_ERROR = true;
     private final String message;
     private final ChatContext context;
     private final boolean doPing;
@@ -45,6 +47,8 @@ public class ChatFormatter {
     private final TextColor messageColor = color;
     private final List<ServerPlayer> pinged = new ArrayList<>();
     private boolean error = false;
+    private boolean onlyKeys = false;
+    private boolean disableFuncs = false;
 
     /**
      * Create the chat formatter for a message.
@@ -102,20 +106,31 @@ public class ChatFormatter {
         while (!isEOF()) {
             this.cur = read();
             switch (this.cur) {
-                case '&' -> formatId();
-                case '<' -> formatColor();
+                case '&' -> {
+                    if (!onlyKeys) formatId();
+                    else write(cur);
+                }
+                case '<' -> {
+                    if (!onlyKeys) formatColor();
+                    else write(cur);
+                }
                 case '%' -> {
                     if (!onlyFormat) formatKey();
                     else write(cur);
                 }
                 case '@' -> {
-                    if (doPing && !onlyFormat) formatMention();
+                    if (doPing && !onlyFormat && !onlyKeys) formatMention();
                     else write(cur);
                 }
                 case '{' -> {
-
+                    if (!onlyFormat && !onlyKeys && !disableFuncs) formatFunction();
+                    else write(cur);
                 }
                 case '*' -> {
+                    if (onlyKeys) {
+                        write(cur);
+                        continue;
+                    }
                     if (!isEOF()) {
                         if ((cur = read()) == '*') {
                             next();
@@ -131,6 +146,10 @@ public class ChatFormatter {
                     }
                 }
                 case '_' -> {
+                    if (onlyKeys) {
+                        write(cur);
+                        continue;
+                    }
                     if (!isEOF()) {
                         if ((cur = read()) == '_') {
                             next();
@@ -146,6 +165,10 @@ public class ChatFormatter {
                     }
                 }
                 case '~' -> {
+                    if (onlyKeys) {
+                        write(cur);
+                        continue;
+                    }
                     if (!isEOF()) {
                         if ((cur = read()) == '~') {
                             next();
@@ -158,6 +181,10 @@ public class ChatFormatter {
                     }
                 }
                 case '#' -> {
+                    if (onlyKeys) {
+                        write(cur);
+                        continue;
+                    }
                     if (!isEOF()) {
                         if ((cur = read()) == '#') {
                             next();
@@ -185,6 +212,65 @@ public class ChatFormatter {
             return new Results(ERROR, pinged, true);
         }
         return new Results(output, pinged, false);
+    }
+
+    private void formatFunction() {
+        String type = readUntil(':');
+        if (cur != ':') {
+            if (SHOW_ERROR) error = true;
+            return;
+        }
+
+        switch (type) {
+            case "click" -> {
+                if (isEOF()) {
+                    if (SHOW_ERROR) error = true;
+                    return;
+                }
+                char clickType = read();
+                String contents = readUntil('}');
+                if (cur != '}') {
+                    if (SHOW_ERROR) error = true;
+                    return;
+                }
+
+                ChatFormatter formatter = new ChatFormatter(contents, context, false, false);
+                formatter.onlyKeys = true;
+                contents = formatter.format().string();
+
+                ClickEvent.Action action = switch (clickType) {
+                    case '/' -> ClickEvent.Action.RUN_COMMAND;
+                    case '#' -> ClickEvent.Action.COPY_TO_CLIPBOARD;
+                    case '@' -> ClickEvent.Action.OPEN_URL;
+                    case '$' -> ClickEvent.Action.OPEN_FILE;
+                    case '>' -> ClickEvent.Action.SUGGEST_COMMAND;
+                    default -> null;
+                };
+
+                if (action == null) return;
+                if (action == ClickEvent.Action.RUN_COMMAND) contents = "/" + contents;
+                if (action == ClickEvent.Action.SUGGEST_COMMAND) contents = "/" + contents;
+
+                next();
+                this.click = new ClickEvent(action, contents);
+            }
+            case "hover" -> {
+                if (isEOF()) {
+                    if (SHOW_ERROR) error = true;
+                    return;
+                }
+                String contents = readUntil('}');
+                if (cur != '}') {
+                    if (SHOW_ERROR) error = true;
+                    return;
+                }
+                next();
+                ChatFormatter formatter = new ChatFormatter(contents, context, false, onlyFormat);
+                formatter.disableFuncs = true;
+                next();
+                this.hover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, formatter.format().output);
+            }
+        }
     }
 
     private void formatMention() {
@@ -217,9 +303,12 @@ public class ChatFormatter {
         }
 
         try {
-            write(context.keyMap.get(key).get());
+            Supplier<@NotNull String> stringSupplier = context.keyMap.get(key);
+            if (stringSupplier == null) return;
+            write(stringSupplier.get());
         } catch (Exception e) {
-            error = true;
+            if (SHOW_ERROR) error = true;
+            else e.printStackTrace();
         }
     }
 
@@ -461,7 +550,7 @@ public class ChatFormatter {
             default -> {
                 TextColor parsed = TextColor.parseColor(key);
                 if (parsed != null) color = parsed;
-                else error = true;
+                else if (SHOW_ERROR) error = true;
             }
         }
     }

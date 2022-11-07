@@ -25,7 +25,7 @@ public final class DefaultRank extends Rank {
     /**
      * Create the default rank instance with some defaults.
      *
-     * @param name        the name to use.
+     * @param name        the getObjName to use.
      * @param prefix      the prefix to use in chat.
      * @param permissions the permissions to set.
      * @since 0.1.0

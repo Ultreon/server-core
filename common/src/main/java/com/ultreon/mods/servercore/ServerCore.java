@@ -4,6 +4,7 @@ import com.ultreon.mods.servercore.client.ClientEvents;
 import com.ultreon.mods.servercore.init.ModDebugGameRules;
 import com.ultreon.mods.servercore.network.Network;
 import com.ultreon.mods.servercore.server.ServerEvents;
+import com.ultreon.mods.servercore.server.config.Config;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -57,6 +58,8 @@ public class ServerCore {
 
         // Listen to the common setup event.
         LifecycleEvent.SETUP.register(ServerCore::setup);
+
+        Config.init();
     }
 
     private static void setup() {

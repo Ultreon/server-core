@@ -114,12 +114,12 @@ public class ChatContext {
      * Add a color.
      *
      * @param key  the key.
-     * @param name a vanilla color name, or hex color.
+     * @param name a vanilla color getObjName, or hex color.
      * @return {@code this}.
      * @since 0.1.0
      */
     public ChatContext color(@NotNull String key, @NotNull String name) {
-        colorMap.put(key, () -> Objects.requireNonNull(TextColor.parseColor(name), "Invalid color name"));
+        colorMap.put(key, () -> Objects.requireNonNull(TextColor.parseColor(name), "Invalid color getObjName"));
         return this;
     }
 }
